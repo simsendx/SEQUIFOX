@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     git \
     wget \
     unzip \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
@@ -29,3 +30,4 @@ ENV PATH="/opt/FLASH-lowercase-overhang:${PATH}"
 
 # Set the default command to display the help message
 CMD ["flash", "--help"]
+

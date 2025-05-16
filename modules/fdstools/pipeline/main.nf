@@ -12,6 +12,7 @@ process FDSTOOLS_PIPELINE {
     tuple val(meta), path(data_out), emit: data_out
 
     script:
+
     """
     fdstools pipeline \\
         --dir $outpath \\
