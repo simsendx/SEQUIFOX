@@ -2,6 +2,8 @@ process FDSTOOLS_TSSV {
     tag "$meta.id"
     label 'process_single'
 
+    cpus 1
+
     container 'localhost/fdstools:2.1.1'
 
     input:
@@ -15,7 +17,6 @@ process FDSTOOLS_TSSV {
 
     script:
     def args = task.ext.args ?: ''
-    // TODO Add default arguments for indel_score and mismatches
     """
     fdstools tssv \\
         $args \\
@@ -23,8 +24,9 @@ process FDSTOOLS_TSSV {
         --dir $outpath \\
         --indel-score $indel_score \\
         --mismatches $mismatches \\
+        --minimum 2 \\
         $library_file \\
-        $reads
+        $reads > tssv.out 2>&1
     """
 
 
