@@ -1,3 +1,2 @@
 sample,fastq_1,fastq_2
-sample_1,sample_1.fastq.gz,sample_1.fastq.gz
-sample_2,sample_2.fastq.gz,sample_2.fastq.gz
+sample_1,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/Simsen28_S17_L001_R1_001.fastq.gz,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/Simsen28_S17_L001_R2_001.fastq.gz

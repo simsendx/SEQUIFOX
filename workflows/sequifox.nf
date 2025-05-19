@@ -39,7 +39,7 @@ workflow SEQUIFOX {
     // It is the order of fields in the samplesheet JSON schema which defines 
     // the order of items in the channel, *not* the order of fields in the 
     // samplesheet file.
-    Channel.fromList(samplesheetToList(params.samplesheet, "assets/schema_input.json"))
+    Channel.fromList(samplesheetToList(samplesheet, "assets/schema_input.json"))
         // Uses a map transformation to iterate over each row in the samplesheet.
         .map {meta, fastq_1, fastq_2 -> 
             // structure the output depending on the input

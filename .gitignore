@@ -1,6 +1,14 @@
 # Compiled class file
 *.class
 
+*.DS_STORE
+
+# Nextflow
+.nextflow*
+work/
+results/
+data/
+
 # Log file
 *.log
 

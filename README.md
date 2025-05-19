@@ -18,8 +18,11 @@ nextflow run simsendx/sequifox
 
 ## Tools used
 
-- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file)
+- [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval)
+- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false).
+- [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
 - [FDStools](https://www.fdstools.nl/tools.html)
+- Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
 
 ### Generate container images
 

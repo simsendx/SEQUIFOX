@@ -4,7 +4,11 @@ process FDSTOOLS_TSSV {
 
     cpus 1
 
-    container 'localhost/fdstools:2.1.1'
+    publishDir = [
+        path: {"${params.outdir}/${workflow.runName}/alignment/tssv/${meta.id}"},
+        mode: params.publish_dir_mode,
+        pattern: "*"
+    ]
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +17,7 @@ process FDSTOOLS_TSSV {
     val mismatches
 
     output:
-    tuple val(meta), path(data_out), emit: data_out
+    tuple val(meta), path("tssv_out"), emit: tssv_out
 
     script:
     def args = task.ext.args ?: ''
@@ -21,7 +25,7 @@ process FDSTOOLS_TSSV {
     fdstools tssv \\
         $args \\
         --num-threads $task.cpus \\
-        --dir $outpath \\
+        --dir tssv_out \\
         --indel-score $indel_score \\
         --mismatches $mismatches \\
         --minimum 2 \\

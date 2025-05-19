@@ -76,6 +76,10 @@
         "mismatches": {
             "type": "number",
             "default": 0.1
+        },
+        "fastp_save_merged": {
+            "type": "boolean",
+            "default": true
         }
     }
 }
