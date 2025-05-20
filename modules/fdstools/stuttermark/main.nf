@@ -2,22 +2,24 @@ process FDSTOOLS_STUTTERMARK {
     tag "$meta.id"
     label 'process_single'
 
-    container ''
+    publishDir = [
+        path: {"${params.outdir}/${workflow.runName}/fdstools/${meta.id}"},
+        mode: params.publish_dir_mode,
+        pattern: "*_stutter.csv"
+    ]
 
     input:
     tuple val(meta), path(infile)
     path library_file
 
     output:
-    tuple val(meta), path(outfile), emit: stuttermark
+    tuple val(meta), path("*_stutter.csv"), emit: stuttermark
 
     script:
     """
-    outfile=${meta.id}_stutter.csv
-    
     fdstools stuttermark \\
         -i $infile \\
-        -o $outfile \\
-        -l $libraryfile
+        -o ${meta.id}_stutter.csv \\
+        -l $library_file
     """
 }

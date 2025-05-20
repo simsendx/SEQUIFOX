@@ -45,7 +45,7 @@ include { FGBIO_CALLMOLECULARCONSENSUSREADS                } from './modules/fgb
 include { FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS       } from './modules/fgbio/callandfiltermolecularconsensusreads/main'
 
 // Main analysis
-include { FDSTOOLS_TSSV as TSSV                            } from './modules/fdstools/tssv/main'
+include { FDSTOOLS_TSSV                                    } from './modules/fdstools/tssv/main'
 include { FDSTOOLS_PIPELINE                                } from './modules/fdstools/pipeline/main'
 include { FDSTOOLS_STUTTERMARK                             } from './modules/fdstools/stuttermark/main'
 //include { UMIERRORCORRECT_UMIERRORCORRECT as UMIERRORCORRECT } from './modules/umierrorcorrect/umierrorcorrect/main'
@@ -101,6 +101,8 @@ workflow {
         }
     //ch_fastqs.view()
 
+    FASTQC(ch_fastqs)
+
     // Preprocessing with fastp:
     // - remove adapters and poly_g (2-color chemistry runs only)
     // - merge reads (if selected) and error correct
@@ -118,12 +120,10 @@ workflow {
     }
     //ch_reads.view()
 
-    // Run fastqc on pre and post fastp fastqs
-    FASTQC(ch_fastqs)
-    FASTQCFASTP(ch_reads)
+    //FASTQCFASTP(ch_reads)
 
     // Pre UMI statistics
-    TSSV(ch_reads, ch_library_file, params.indel_score, params.mismatches)
+    FDSTOOLS_TSSV(ch_reads, ch_library_file, params.indel_score, params.mismatches)
 
     // Preprocessing for UMI error correction
     //PREPROCESSING(ch_reads, params.umi_length, params.spacer_length)
@@ -155,7 +155,7 @@ workflow {
 
     FDSTOOLS_PIPELINE(SAMTOOLS_BAMTOFQ.out.fastq, ch_ini_file, ch_library_file)
 
-    //FDSTOOLS_STUTTERMARK()
+    FDSTOOLS_STUTTERMARK(FDSTOOLS_PIPELINE.out.csv, ch_library_file)
 }
 
 /*

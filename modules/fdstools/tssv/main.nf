@@ -5,7 +5,7 @@ process FDSTOOLS_TSSV {
     cpus 1
 
     publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/fdstools/tssv_pre_umi/${meta.id}"},
+        path: {"${params.outdir}/${workflow.runName}/fdstools/${meta.id}/"},
         mode: params.publish_dir_mode,
         pattern: "*"
     ]
@@ -17,19 +17,21 @@ process FDSTOOLS_TSSV {
     val mismatches
 
     output:
-    tuple val(meta), path("tssv_out"), emit: tssv_out
+    tuple val(meta), path("tssv_pre_umi"), emit: tssv_pre_umi
 
     script:
     def args = task.ext.args ?: ''
     """
+    mkdir tssv_pre_umi
+
     fdstools tssv \\
-        $args \\
         --num-threads $task.cpus \\
-        --dir tssv_out \\
+        --dir tssv_pre_umi \\
         --indel-score $indel_score \\
         --mismatches $mismatches \\
         --minimum 2 \\
+        --report preumi.html \\
         $library_file \\
-        $reads > tssv.out 2>&1
+        $reads
     """
 }
