@@ -1,5 +1,6 @@
 process FGBIO_FASTQTOBAM {
     tag "$meta.id"
+    label 'process_low'
 
     //conda "bioconda::fgbio=2.4.0"
     container 'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc'

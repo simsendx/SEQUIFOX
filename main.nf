@@ -23,31 +23,34 @@ include { validateParameters                                 } from 'plugin/nf-s
 
 // Workflows and subworkflows
 include { PREPARE_GENOME              } from './subworkflows/preparegenome'
+include { FGBIO_CONSENSUS             } from './subworkflows/fgbio_consensus'
 //include { SEQUIFOX                  } from './workflows/sequifox'
 
 // Preprocessing
 include { FASTQC                                           } from './modules/fastqc/main'
 include { FASTQC as FASTQCFASTP                            } from './modules/fastqc/main'
 include { FASTP                                            } from './modules/fastp/main'
-//include { UMIERRORCORRECT_PREPROCESSING as PREPROCESSING   } from './modules/umierrorcorrect/preprocessing/main'
-//include { PICARD_FASTQTOSAM as PICARD_FASTQTOBAM           } from './modules/picard/fastqtosam/main'
+
 
 // samtools
 include { SAMTOOLS_FAIDX                                   } from './modules/samtools/faidx/main'
-//include { SAMTOOLS_REHEADER                                } from './modules/samtools/reheader/main'
 include { SAMTOOLS_BAMTOFQ                                 } from './modules/samtools/bamtofq/main'
 
 // fgbio
 include { FGBIO_FASTQTOBAM                                 } from './modules/fgbio/fastqtobam/main'
 include { ALIGN_BAM as ALIGN_RAW_BAM                       } from './modules/fgbio/alignbam/main'
 include { FGBIO_GROUPREADSBYUMI                            } from './modules/fgbio/groupreadsbyumi/main'
-include { FGBIO_CALLMOLECULARCONSENSUSREADS                } from './modules/fgbio/callmolecularconsensus/main'
 include { FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS       } from './modules/fgbio/callandfiltermolecularconsensusreads/main'
 
 // Main analysis
 include { FDSTOOLS_TSSV                                    } from './modules/fdstools/tssv/main'
 include { FDSTOOLS_PIPELINE                                } from './modules/fdstools/pipeline/main'
 include { FDSTOOLS_STUTTERMARK                             } from './modules/fdstools/stuttermark/main'
+
+
+//include { SAMTOOLS_REHEADER                                } from './modules/samtools/reheader/main'
+//include { UMIERRORCORRECT_PREPROCESSING as PREPROCESSING   } from './modules/umierrorcorrect/preprocessing/main'
+//include { PICARD_FASTQTOSAM as PICARD_FASTQTOBAM           } from './modules/picard/fastqtosam/main'
 //include { UMIERRORCORRECT_UMIERRORCORRECT as UMIERRORCORRECT } from './modules/umierrorcorrect/umierrorcorrect/main'
 
 /*
@@ -138,20 +141,20 @@ workflow {
     //UMIERRORCORRECT(SAMTOOLS_REHEADER.out.bam, params.bed_file, params.ref_genome, params.consensus_method)
 
     // FGBIO
-    FGBIO_FASTQTOBAM(ch_reads, params.read_structures)
+    //FGBIO_FASTQTOBAM(ch_reads, params.read_structures)
 
-    ALIGN_RAW_BAM(FGBIO_FASTQTOBAM.out.bam, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa, "template-coordinate")
+    //ALIGN_RAW_BAM(FGBIO_FASTQTOBAM.out.bam, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa, "template-coordinate")
 
-    FGBIO_GROUPREADSBYUMI(ALIGN_RAW_BAM.out.bam, params.groupreadsbyumi_strategy, params.groupreadsbyumi_edits)
-
-    //FGBIO_CALLMOLECULARCONSENSUSREADS(FGBIO_GROUPREADSBYUMI.out.bam, params.call_min_reads, params.call_min_baseq)
+    //FGBIO_GROUPREADSBYUMI(ALIGN_RAW_BAM.out.bam, params.groupreadsbyumi_strategy, params.groupreadsbyumi_edits)
 
     // Run fgbio CallMolecularConsensusReads and fgbio FilterConsensusReads in the same process
     // for greater efficiency. Uses the same min_reads value for constructing and filtering consensus 
     // reads
-    FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS(FGBIO_GROUPREADSBYUMI.out.bam, ch_fasta, PREPARE_GENOME.out.fasta_fai, params.call_min_reads, params.call_min_baseq, params.filter_max_base_error_rate)
+    //FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS(FGBIO_GROUPREADSBYUMI.out.bam, ch_fasta, PREPARE_GENOME.out.fasta_fai, params.call_min_reads, params.call_min_baseq, params.filter_max_base_error_rate)
 
-    SAMTOOLS_BAMTOFQ(FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS.out.bam)
+    FGBIO_CONSENSUS(ch_reads, params.read_structures, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa)
+
+    SAMTOOLS_BAMTOFQ(FGBIO_CONSENSUS.out.consensus_bam)
 
     FDSTOOLS_PIPELINE(SAMTOOLS_BAMTOFQ.out.fastq, ch_ini_file, ch_library_file)
 

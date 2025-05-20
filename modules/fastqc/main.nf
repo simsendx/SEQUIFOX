@@ -2,7 +2,7 @@ process FASTQC {
     tag "$meta.id with $task.cpus cores"
     label 'process_medium'
 
-    container 'biocontainers/fastqc:0.12.1--hdfd78af_0'
+    container 'quay.io/biocontainers/fastqc:0.12.1--hdfd78af_0'
 
     cpus 4
 

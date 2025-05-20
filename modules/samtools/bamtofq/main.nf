@@ -1,7 +1,8 @@
 process SAMTOOLS_BAMTOFQ {
     tag "$meta.id"
+    label 'process_single'
 
-    container 'biocontainers/samtools:1.21--h50ea8bc_0'
+    container 'quay.io/biocontainers/samtools:1.21--h50ea8bc_0'
 
     input:
     tuple val(meta), path(bam)

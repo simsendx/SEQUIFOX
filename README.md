@@ -24,7 +24,6 @@ nextflow run main.nf --samplesheet <path_to_samplesheet> -profile podman
 
 If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -profile docker,arm`.
 
-
 ## Tools used
 
 - [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval)
@@ -32,6 +31,7 @@ If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -p
 - [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
 - [FDStools](https://www.fdstools.nl/tools.html)
 - Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
+- [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md)
 
 ### Generate container images
 

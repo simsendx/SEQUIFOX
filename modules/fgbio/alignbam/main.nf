@@ -1,6 +1,6 @@
 process ALIGN_BAM {
     tag "${meta.id}"
-    label 'process_high'
+    label 'process_medium'
 
     //conda "bioconda::fgbio=2.4.0 bioconda::bwa=0.7.18 bioconda::samtools=1.21"
     container 'community.wave.seqera.io/library/fgbio_bwa_samtools:6fad70472c85d4d3'

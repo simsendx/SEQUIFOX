@@ -2,7 +2,7 @@ process SAMTOOLS_FAIDX {
     tag "$fasta"
     label 'process_single'
 
-    container 'biocontainers/samtools:1.21--h50ea8bc_0'
+    container 'quay.io/biocontainers/samtools:1.21--h50ea8bc_0'
 
     input:
     tuple val(meta), path(fasta)
@@ -18,6 +18,7 @@ process SAMTOOLS_FAIDX {
     """
     samtools \\
         faidx \\
+        --threads ${task.cpus} \\
         $fasta \\
         $args
 

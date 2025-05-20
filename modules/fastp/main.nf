@@ -4,7 +4,7 @@ process FASTP {
 
     cpus 4
 
-    container 'biocontainers/fastp:0.23.4--hadf994f_2'
+    container 'quay.io/biocontainers/fastp:0.23.4--hadf994f_2'
 
     publishDir = [
         [
