@@ -1,6 +1,32 @@
 process UMIERRORCORRECT_PREPROCESSING {
     tag "$meta.id"
 
-    container 'e7d2a2732440'
+    cpus 2
+
+    publishDir = [
+        path: {"${params.outdir}/${workflow.runName}/preprocessing/${meta.id}"},
+        mode: params.publish_dir_mode,
+        pattern: "*_umis_in_header.fastq.gz"
+    ]
+
+    input:
+    tuple val(meta), path(reads)
+    val umi_length
+    val spacer_length
+
+    output:
+    tuple val(meta), path("*_umis_in_header.fastq.gz"), emit: umi_fastq
+
+    script:
+    """
+    preprocess.py \\
+        -o . \\
+        -r1 $reads \\
+        -ul $umi_length \\
+        -sl $spacer_length \\
+        -s ${meta.id} \\
+        -t $task.cpus
+    """
+
 
 }

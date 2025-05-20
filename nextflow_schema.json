@@ -55,19 +55,46 @@
         "library_file": {
             "type": "string"
         },
-        "marker_bed": {
+        "bed_file": {
             "type": "string"
         },
         "ini_file": {
             "type": "string"
         },
-        "genome": {
-            "type": "string",
-            "default": "hg38"
+        "fasta": {
+            "type": "string"
         },
         "publish_dir_mode": {
             "type": "string",
             "default": "copy"
+        },
+        "fastp_save_merged": {
+            "type": "boolean",
+            "default": true
+        },
+        "read_structures": {
+            "type": "string",
+            "default": "19M16S+T"
+        },
+        "groupreadsbyumi_strategy": {
+            "type": "string",
+            "default": "adjacency"
+        },
+        "groupreadsbyumi_edits": {
+            "type": "integer",
+            "default": 1
+        },
+        "call_min_reads": {
+            "type": "integer",
+            "default": 3
+        },
+        "call_min_baseq": {
+            "type": "integer",
+            "default": 10
+        },
+        "filter_max_base_error_rate": {
+            "type": "number",
+            "default": 0.1
         },
         "indel_score": {
             "type": "integer",
@@ -77,9 +104,21 @@
             "type": "number",
             "default": 0.1
         },
-        "fastp_save_merged": {
-            "type": "boolean",
-            "default": true
+        "umi_length": {
+            "type": "integer",
+            "default": 19
+        },
+        "spacer_length": {
+            "type": "integer",
+            "default": 16
+        },
+        "min_read_length": {
+            "type": "integer",
+            "default": 100
+        },
+        "consensus_method": {
+            "type": "string",
+            "default": "most_common"
         }
     }
 }

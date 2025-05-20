@@ -21,7 +21,10 @@ process FASTP {
 
     input:
     tuple val(meta), path(reads)
-    val   save_merged
+    val save_merged
+    val umi_length
+    val spacer_length
+    val min_read_length
 
     output:
     tuple val(meta), path('*_fastp.fastq.gz')   , emit: reads
@@ -44,12 +47,13 @@ process FASTP {
         --out2 ${prefix}_2_fastp.fastq.gz \\
         --json ${prefix}.fastp.json \\
         --html ${prefix}.fastp.html \\
+        --correction \\
         $merge_fastq \\
+        -l $min_read_length \\
         --thread $task.cpus \\
         --detect_adapter_for_pe \\
         $args \\
         2> >(tee ${prefix}.fastp.log >&2)
-
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

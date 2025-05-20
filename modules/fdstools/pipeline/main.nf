@@ -2,26 +2,29 @@ process FDSTOOLS_PIPELINE {
     tag "$meta.id"
     label 'process_single'
 
-    container ''
+    publishDir = [
+        path: {"${params.outdir}/${workflow.runName}/fdstools/${meta.id}"},
+        mode: params.publish_dir_mode,
+        pattern: "*"
+    ]
 
     input:
     tuple val(meta), path(reads)
+    path ini_file
     path library_file
 
     output:
-    tuple val(meta), path(data_out), emit: data_out
+    tuple val(meta), path("pipeline_results"), emit: data_out
+    tuple val(meta), path('*stats.txt')      , emit: stats
+    tuple val(meta), path('*.html')          , emit: html
+    tuple val(meta), path('*.csv')           , emit: csv
 
     script:
 
     """
     fdstools pipeline \\
-        --dir $outpath \\
-        --indel-score 2 \\
-        --mismatches 0.1 \\
-        --num-threads $task.cpus \\
-        $library_file \\
-        $reads
+        $ini_file \\
+        -l $library_file \\
+        -s $reads
     """
-
-
 }

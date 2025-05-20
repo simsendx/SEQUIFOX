@@ -5,7 +5,7 @@ process FDSTOOLS_TSSV {
     cpus 1
 
     publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/alignment/tssv/${meta.id}"},
+        path: {"${params.outdir}/${workflow.runName}/fdstools/tssv_pre_umi/${meta.id}"},
         mode: params.publish_dir_mode,
         pattern: "*"
     ]
@@ -32,6 +32,4 @@ process FDSTOOLS_TSSV {
         $library_file \\
         $reads > tssv.out 2>&1
     """
-
-
 }

@@ -11,17 +11,15 @@ process UMIERRORCORRECT_UMIERRORCORRECT {
 
     input:
     tuple val(meta), path(bam)
-    path(bed_file)
-    path(ref_genome)
-    val(consensus_method)
+    path bed_file
+    path ref_genome
+    val consensus_method
 
     output:
     tuple val(meta), path("umi_out"), emit: umi_out
 
     script:
     """
-    mkdir umi_out
-
     umi_error_correct.py \\
         -o umi_out \\
         -b $bam \\
