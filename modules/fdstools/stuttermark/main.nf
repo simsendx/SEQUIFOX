@@ -10,7 +10,7 @@ process FDSTOOLS_STUTTERMARK {
 
     input:
     tuple val(meta), path(infile)
-    path library_file
+    tuple val(meta2), path(library_file)
 
     output:
     tuple val(meta), path("*_stutter.csv"), emit: stuttermark

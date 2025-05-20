@@ -10,8 +10,8 @@ process FDSTOOLS_PIPELINE {
 
     input:
     tuple val(meta), path(reads)
-    path ini_file
-    path library_file
+    tuple val(meta2), path(ini_file)
+    tuple val(meta3), path(library_file)
 
     output:
     tuple val(meta), path("pipeline_results"), emit: data_out

@@ -12,7 +12,7 @@ process FDSTOOLS_TSSV {
 
     input:
     tuple val(meta), path(reads)
-    path library_file
+    tuple val(meta2), path(library_file)
     val indel_score
     val mismatches
 
