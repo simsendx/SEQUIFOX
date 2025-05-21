@@ -65,6 +65,7 @@ workflow {
     ch_fasta = params.fasta ? Channel.fromPath(params.fasta, checkIfExists: true).map { it -> [[id: it.baseName], it] }.collect() : 
         Channel.fromPath("${projectDir}/assets/mini_hg38.fa", checkIfExists: true).map { it -> [[id: it.baseName], it] }.collect()
 
+
     // Import samplesheet
     // It is the order of fields in the samplesheet JSON schema which defines 
     // the order of items in the channel, *not* the order of fields in the 
