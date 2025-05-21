@@ -23,6 +23,7 @@ include { validateParameters          } from 'plugin/nf-schema'
 
 // Workflows and subworkflows
 include { PREPARE_GENOME              } from './subworkflows/preparegenome'
+include { UMIEC_CONSENSUS             } from './subworkflows/umiec_consensus'
 include { FGBIO_CONSENSUS             } from './subworkflows/fgbio_consensus'
 include { FDSTOOLS                    } from './subworkflows/fdstools'
 
@@ -64,9 +65,6 @@ workflow {
     ch_fasta = params.fasta ? Channel.fromPath(params.fasta, checkIfExists: true).map { it -> [[id: it.baseName], it] }.collect() : 
         Channel.fromPath("${projectDir}/assets/mini_hg38.fa", checkIfExists: true).map { it -> [[id: it.baseName], it] }.collect()
 
-    // Prepare genome files (faidx index, samtools dict and bwa index)
-    PREPARE_GENOME(ch_fasta)
-
     // Import samplesheet
     // It is the order of fields in the samplesheet JSON schema which defines 
     // the order of items in the channel, *not* the order of fields in the 
@@ -101,11 +99,18 @@ workflow {
     }
     //ch_reads.view()
 
-    FASTQCFASTP(ch_reads)
+    //FASTQCFASTP(ch_reads)
 
-    FGBIO_CONSENSUS(ch_reads, params.read_structures, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa)
+    if(params.mode == 'fgbio') {
+        // Prepare genome files (faidx index, samtools dict and bwa index)
+        PREPARE_GENOME(ch_fasta)
+        FGBIO_CONSENSUS(ch_reads, params.read_structures, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa, ch_library_file)
+        FDSTOOLS(FGBIO_CONSENSUS.out.consensus_bam, ch_library_file, ch_ini_file)
+    } else {
+        UMIEC_CONSENSUS(ch_reads, ch_bed_file, ch_library_file, ch_fasta)
+        FDSTOOLS(UMIEC_CONSENSUS.out.filtered_bam, ch_library_file, ch_ini_file)
+    }
 
-    FDSTOOLS(ch_reads, FGBIO_CONSENSUS.out.consensus_bam, ch_library_file, ch_ini_file)
 }
 
 /*

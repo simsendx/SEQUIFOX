@@ -1,7 +1,6 @@
 
 
 include { SAMTOOLS_BAMTOFQ                                 } from '../modules/samtools/bamtofq/main'
-include { FDSTOOLS_TSSV                                    } from '../modules/fdstools/tssv/main'
 include { FDSTOOLS_PIPELINE                                } from '../modules/fdstools/pipeline/main'
 include { FDSTOOLS_STUTTERMARK                             } from '../modules/fdstools/stuttermark/main'
 
@@ -9,15 +8,12 @@ include { FDSTOOLS_STUTTERMARK                             } from '../modules/fd
 workflow FDSTOOLS {
 
     take:
-    reads
     consensus_bam
     library_file
     ini_file
 
 
     main:
-
-    FDSTOOLS_TSSV(reads, library_file, params.indel_score, params.mismatches)
 
     SAMTOOLS_BAMTOFQ(consensus_bam)
 

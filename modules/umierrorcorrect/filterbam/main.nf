@@ -1,34 +1,25 @@
 process UMIERRORCORRECT_FILTERBAM {
     tag "$meta.id"
 
-    cpus 4
-
     publishDir = [
         path: {"${params.outdir}/${workflow.runName}/out/${meta.id}"},
         mode: params.publish_dir_mode,
-        pattern: "*"
+        pattern: "*_filtered.bam"
     ]
 
     input:
     tuple val(meta), path(bam)
-    path(bed_file)
-    path(ref_genome)
-    val(consensus_method)
+    tuple val(meta2), path(bai)
+    val consensus_cutoff
 
     output:
-    tuple val(meta), path("umi_out"), emit: umi_out
+    tuple val(meta), path("*_filtered.bam"), emit: filtered_bam
 
     script:
     """
-    mkdir umi_out
-
-    umi_error_correct.py \\
-        -o umi_out \\
-        -b $bam \\
-        -bed $bed_file \\
-        -r $ref_genome \\
-        -c $consensus_method \\
-        -s ${meta.id} \\
-        -t $task.cpus
+    filter_bam.py \\
+        -i $bam \\
+        -o ${meta.id}_filtered.bam \\
+        -c $consensus_cutoff
     """
 }

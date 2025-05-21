@@ -27,6 +27,4 @@ process UMIERRORCORRECT_PREPROCESSING {
         -s ${meta.id} \\
         -t $task.cpus
     """
-
-
 }

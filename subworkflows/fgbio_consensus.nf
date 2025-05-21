@@ -3,6 +3,7 @@
 //
 
 // fgbio
+include { FDSTOOLS_TSSV                                      } from '../modules/fdstools/tssv/main'
 include { FGBIO_FASTQTOBAM                                 } from '../modules/fgbio/fastqtobam/main'
 include { ALIGN_BAM as ALIGN_RAW_BAM                       } from '../modules/fgbio/alignbam/main'
 include { FGBIO_GROUPREADSBYUMI                            } from '../modules/fgbio/groupreadsbyumi/main'
@@ -18,8 +19,12 @@ workflow FGBIO_CONSENSUS {
     fai
     dict
     bwa
+    library_file
 
     main:
+
+    FDSTOOLS_TSSV(reads, library_file, params.indel_score, params.mismatches)
+
     // Convert preprocessed fastq to bam
     FGBIO_FASTQTOBAM(reads, params.read_structures)
 

@@ -17,16 +17,17 @@ process FDSTOOLS_TSSV {
     val mismatches
 
     output:
-    tuple val(meta), path("tssv_pre_umi"), emit: tssv_pre_umi
+    tuple val(meta), path("tssv_out"), emit: tssv_out
+    tuple val(meta), path("tssv_out/*/paired.fq.gz"), emit: paired_fq
 
     script:
     def args = task.ext.args ?: ''
     """
-    mkdir tssv_pre_umi
+    mkdir tssv_out
 
     fdstools tssv \\
         --num-threads $task.cpus \\
-        --dir tssv_pre_umi \\
+        --dir tssv_out \\
         --indel-score $indel_score \\
         --mismatches $mismatches \\
         --minimum 2 \\

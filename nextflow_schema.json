@@ -119,6 +119,9 @@
         "consensus_method": {
             "type": "string",
             "default": "most_common"
+        },
+        "mode": {
+            "type": "string"
         }
     }
 }
