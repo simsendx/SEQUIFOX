@@ -8,9 +8,9 @@
 
 2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) (you can follow [this tutorial](https://singularity-tutorial.github.io/01-installation/)), [`Podman`](https://podman.io/)
 
-3. Download the pipeline and test it on a minimal dataset with a single command. Does not work for private repository!
+3. Download the pipeline and test it on a minimal dataset with a single command. 
 
-For the profile choose whichever container environment you are using, e.g. docker, podman or singularity.
+For the profile choose whichever container environment you are using, e.g. docker, podman or singularity. Does not work for private repository!
 
 ```bash
 nextflow run simsendx/sequifox --samplesheet <path_to_samplesheet> -profile podman
@@ -19,7 +19,7 @@ nextflow run simsendx/sequifox --samplesheet <path_to_samplesheet> -profile podm
 For private respositories clone the repo and call ´main.nf´ directly
 
 ```bash
-nextflow run main.nf --samplesheet <path_to_samplesheet> -profile podman
+nextflow main.nf --samplesheet <path_to_samplesheet> -profile podman
 ```
 
 If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -profile docker,arm`.
