@@ -1,6 +1,6 @@
 # SEQUIFOX
 
-Based on [UMIec_forensics](https://github.com/sfilges/UMIec_forensics/tree/main).
+
 
 ## Quick Start
 
@@ -23,6 +23,69 @@ nextflow run main.nf --samplesheet <path_to_samplesheet> -profile podman
 ```
 
 If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -profile docker,arm`.
+
+### Typical start
+
+```bash
+nextflow run nf-core/sarek -r <VERSION> -profile <PROFILE> --samplesheet ./samplesheet.csv --outdir ./my-results 
+```
+
+`-r <VERSION>` is optional but strongly recommended for reproducibility and should match the latest version.
+
+`-profile <PROFILE>` is mandatory and should reflect any pipeline profile specified in the profile section.
+
+`--samplesheet <FILE>` is mandatory and must be formated as described below.
+
+`--outdir` is optional and be default the pipeline will create a directory called `results`in your current workding directory,
+
+Note that the pipeline will create the following files and directories in your working directory:
+
+```
+work                # Directory containing the nextflow working files
+<OUTDIR>            # Finished results in specified location (defined with --outdir)
+.nextflow_log       # Log file from Nextflow
+# Other nextflow hidden files, eg. history of pipeline runs and old logs.
+```
+
+### Optional parameters
+
+`--fasta` Reference fasta, otherwise pulls igenomes hg38
+`--call_min_reads` Default is 3, minimum number os reads required to form a consensus read
+`--library_file` Library file for FDStools, uses default otherwise.
+`--bed_file` Bed file for UMIErrorCorrect annotation, uses default otherwise. Not required in fgbio workflow.
+`--ini_file` Initilisation file for FDStools pipeline. uses default otherwise.
+
+Default files are located in the assets folder.
+
+
+## Pipeline overview
+
+The current pipeline operates in three phases:
+
+1. Preprocessing
+2. UMI correction
+3. Annotation
+
+### Preprocessing
+
+The preprocessing phase imports the fastq files and checks the integrity of all specified files and parameters. Fastp is 
+used to merge paired-end reads and perform adapter trimming as well as some quality filtering. Fastqc is run to generate
+quality control files.
+
+### UMI Correction
+
+Formation of consensus reads is currently performed in two separate modes 'default' and 'fgbio'. The default mode is based on
+alignment-free formation based on [UMIec_forensics](https://github.com/sfilges/UMIec_forensics/tree/main) using UMIErrorCorrect.
+The other workflow is based on [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md)
+best practices which uses UMI and mapping location for consensus family generation. The default piepline is run without any 
+additional flag. To run the fgbio workflow, run the pipeline with `--mode fgbio`.
+
+*NOTE!* If running fgbio mode, the reference fasta will be indexed every time, which can take ~1 hour if using the entire human genome.
+This will be updated in the future!
+
+### Annotation
+
+STR markers are mapped by FDStools from the UMI corrected files generated in the previous step.
 
 ## Tools used
 
