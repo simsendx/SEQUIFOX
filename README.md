@@ -27,7 +27,7 @@ If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -p
 ### Typical start
 
 ```bash
-nextflow run nf-core/sarek -r <VERSION> -profile <PROFILE> --samplesheet ./samplesheet.csv --outdir ./my-results 
+nextflow run simsendx/sequifox -r <VERSION> -profile <PROFILE> --samplesheet ./samplesheet.csv --outdir ./my-results 
 ```
 
 `-r <VERSION>` is optional but strongly recommended for reproducibility and should match the latest version.
