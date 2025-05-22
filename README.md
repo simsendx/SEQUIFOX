@@ -1,7 +1,5 @@
 # SEQUIFOX
 
-
-
 ## Quick Start
 
 1. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=24.0.4`)
@@ -89,14 +87,103 @@ STR markers are mapped by FDStools from the UMI corrected files generated in the
 
 ## Tools used
 
-- [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval)
-- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false).
-- [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
+- [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval) *NOTE!* Not used in current iteration of the pipeline.
+- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false). *NOTE!* Not used in current iteration of the pipeline.
+- [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH used in the original pipeline UMIec_forensics; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
 - [FDStools](https://www.fdstools.nl/tools.html)
 - Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
-- [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md)
+- [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md); alternative tools for consensus read formation.
 
-### Generate container images
+## Detailed installation instructions
+
+### Nextflow
+
+Nextflow requires Bash 3.2 (or later) and Java 17 (or later, up to 24) to be installed. To see which version of Java you have, run the following command:
+
+```bash
+java -version
+```
+
+If you don’t have a compatible version of Java installed, it is recommended that you install it through SDKMAN!, and that you use the latest Long-Term-Support (LTS) version of Temurin. See Which version of JDK should I use? for more information about different versions of Java.
+
+To install Java with SDKMAN:
+
+1. Install SDKMAN:
+
+```bash
+curl -s https://get.sdkman.io | bash
+```
+
+2. Open a new terminal.
+
+
+3. Install Java
+
+```bash
+sdk install java 17.0.10-tem
+```
+
+4. Confirm that Java is installed correctly:
+
+```bash
+java -version
+```
+
+5. Download Nextflow
+
+```bash
+curl -s https://get.nextflow.io | bash
+```
+
+6. Make Nextflow executable
+
+```bash
+chmod +x nextflow
+```
+
+7. Move Nextflow into an executable path. For example:
+
+```bash
+mkdir -p $HOME/.local/bin/
+mv nextflow $HOME/.local/bin/
+```
+
+8. Confirm that nextflow is installed properly.
+
+```bash
+nextflow info
+```
+
+9. Install a suitable container management tool, such as docker or podman. We will use podman as an example:
+
+#### On Linux (Debian/Ubuntu)
+
+```bash
+sudo apt-get -y install podman
+```
+
+#### On Mac
+
+```bash
+brew install podman
+```
+
+After installing, you need to create and start your first Podman machine:
+
+```bash
+podman machine init
+podman machine start
+```
+
+You can then verify the installation information using:
+
+```bash
+podman info
+```
+
+## Advanced Options
+
+### Generate new container images
 
 Nextflow uses containers natively and these provide many additional
 benefits, including easy redistribution, dependency management and

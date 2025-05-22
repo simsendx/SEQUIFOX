@@ -23,6 +23,7 @@ workflow UMIEC_CONSENSUS {
     // Preprocessing for UMI error correction
     EXTRACTUMIS(reads, params.umi_length, params.spacer_length)
 
+    // Map preprocessed reads to STR markers
     FDSTOOLS_TSSV(EXTRACTUMIS.out.umi_fastq, library_file, params.indel_score, params.mismatches)
 
     // Convert fastq to bam (alignment free)
