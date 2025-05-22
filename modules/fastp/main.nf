@@ -6,18 +6,8 @@ process FASTP {
 
     container 'quay.io/biocontainers/fastp:0.23.4--hadf994f_2'
 
-    publishDir = [
-        [
-            path: {"${params.outdir}/${workflow.runName}/reports/fastp/${meta.id}"},
-            mode: params.publish_dir_mode,
-            pattern: "*.{html,json,log}"
-        ],
-        [
-            path: {"${params.outdir}/${workflow.runName}/preprocessing/fastp/${meta.id}"},
-            mode: params.publish_dir_mode,
-            pattern: '*.fastq.gz'
-        ]
-    ]
+    publishDir "${params.outdir}/${workflow.runName}/reports/fastp/${meta.id}", mode: params.publish_dir_mode, pattern: "*.{html,json,log}"
+    publishDir "${params.outdir}/${workflow.runName}/preprocessing/fastp/${meta.id}", mode: params.publish_dir_mode, pattern: '*.fastq.gz'
 
     input:
     tuple val(meta), path(reads)

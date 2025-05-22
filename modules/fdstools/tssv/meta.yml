@@ -1,0 +1,66 @@
+name: fdstools_tssv
+description:  Link and count raw reads to STR markers
+keywords:
+  - fastq
+  - mapping
+  - STR
+tools:
+  - bwa:
+      description: |
+        Scans a FastA or FastQ file, finding the sequences from the 'flanks' section in the provided library file. 
+        Each time a pair of flanks is found, that sequence read is linked to the corresponding marker and 
+        the portion of the sequence between the flanks is extracted. The number of times each such extracted 
+        sequence was encountered is counted, along with the orientation (strand) in which it was found in the input file. 
+        The output is a list of unique sequences found for each marker including the corresponding counts.
+      homepage: https://github.com/Jerrythafast/FDSTools
+      documentation: https://www.fdstools.nl/tools.html#tssv
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - reads:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fastq:
+        type: file
+        description: Input  fastq files
+  - library_file:
+    - meta:
+      type: map
+      description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - library_file:  |
+        library file with marker definitions
+output:
+  - tssv_out:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - tssv_out:
+          type: file
+          description: TSSV output files
+          pattern: "*.{fastq,fq}.gz"
+  - paired_fq:
+      - meta2:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - fastq:
+          type: file
+          description: Paired and marker matched fastq files
+          pattern: "*.{fastq,fq}.gz"          
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@sfilges"
+maintainers:
+  - "@sfilges"

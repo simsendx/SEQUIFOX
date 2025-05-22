@@ -6,21 +6,15 @@
 
 2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) (you can follow [this tutorial](https://singularity-tutorial.github.io/01-installation/)), [`Podman`](https://podman.io/)
 
-3. Download the pipeline and test it on a minimal dataset with a single command. 
-
-For the profile choose whichever container environment you are using, e.g. docker, podman or singularity. Does not work for private repository!
+3. Download the pipeline and test it on a minimal dataset with a single command. For the profile choose whichever container environment you are using, e.g. docker, podman or singularity.
 
 ```bash
 nextflow run simsendx/sequifox --samplesheet <path_to_samplesheet> -profile podman
 ```
 
-For private respositories clone the repo and call ´main.nf´ directly
-
-```bash
-nextflow main.nf --samplesheet <path_to_samplesheet> -profile podman
-```
-
 If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -profile docker,arm`.
+
+For detailed installation instructions, see below.
 
 ### Typical start
 
@@ -59,6 +53,17 @@ work                # Directory containing the nextflow working files
 
 Default files are located in the assets folder and based on SiMSen-Seq assays.
 
+#### Run as a background job
+
+```bash
+nextflow -bg run simsendx/sequifox <other parameters>
+```
+
+#### Alternative working directory
+
+```bash
+nextflow run simsendx/sequifox <other parameters> --work-dir <new working directory>
+```
 
 ## Pipeline overview
 
@@ -102,55 +107,38 @@ Nextflow requires Bash 3.2 (or later) and Java 17 (or later, up to 24) to be ins
 java -version
 ```
 
-If you don’t have a compatible version of Java installed, it is recommended that you install it through SDKMAN!, and that you use the latest Long-Term-Support (LTS) version of Temurin. To install Java with SDKMAN:
+If you don’t have a compatible version of Java installed you can follow the instructions [here](https://www.nextflow.io/docs/latest/getstarted.html#installation).
 
-1. Install SDKMAN:
-
-```bash
-curl -s https://get.sdkman.io | bash
-```
-
-2. Restart or open a new terminal.
-
-
-3. Install Java
-
-```bash
-sdk install java 17.0.10-tem
-```
-
-4. Confirm that Java is installed correctly:
-
-```bash
-java -version
-```
-
-5. Download Nextflow
+1. Download Nextflow
 
 ```bash
 curl -s https://get.nextflow.io | bash
 ```
 
-6. Make Nextflow executable
+2. Make Nextflow executable
 
 ```bash
 chmod +x nextflow
 ```
 
-7. Move Nextflow into an executable path. For example:
+3. Move Nextflow into an executable path. For example:
 
 ```bash
 mkdir -p $HOME/.local/bin/
 mv nextflow $HOME/.local/bin/
 ```
 
-8. Confirm that nextflow is installed properly.
+4. Confirm that nextflow is installed properly.
 
 ```bash
 nextflow info
 ```
 
-9. Install a suitable container management tool, such as docker or podman. We will use podman as an example on Linux (Debian/Ubuntu)
+Done :)
+
+### Container management 
+
+Install a suitable container management tool, such as docker or podman. We will use podman as an example on Linux (Debian/Ubuntu)
 
 ```bash
 sudo apt-get -y install podman

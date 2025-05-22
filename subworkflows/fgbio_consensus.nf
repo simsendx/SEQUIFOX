@@ -3,7 +3,7 @@
 //
 
 // fgbio
-include { FDSTOOLS_TSSV                                      } from '../modules/fdstools/tssv/main'
+include { FDSTOOLS_TSSV                                    } from '../modules/fdstools/tssv/main'
 include { FGBIO_FASTQTOBAM                                 } from '../modules/fgbio/fastqtobam/main'
 include { ALIGN_BAM as ALIGN_RAW_BAM                       } from '../modules/fgbio/alignbam/main'
 include { FGBIO_GROUPREADSBYUMI                            } from '../modules/fgbio/groupreadsbyumi/main'

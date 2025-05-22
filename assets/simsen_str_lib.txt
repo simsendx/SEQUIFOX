@@ -1,0 +1,134 @@
+; Lines beginning with a semicolon (;) are ignored by FDSTools.
+
+[genome_position]
+; Specify the chromosome number and positions of the first and last reported
+; nucleotide of each marker (both inclusive, using human genome build GRCh38
+; and rCRS for human mtDNA). This range should not include the primer binding
+; sites.
+; Specify 'M' as the chromosome name for markers on mitochondrial DNA. Allele
+; names generated for these markers will follow mtDNA nomenclature guidelines
+; (Parson et al., 2014). If one of your mtDNA fragments starts near the end of
+; the reference sequence and continues at the beginning, you can obtain correct
+; base numbering by specifying the fragment's genome position as "M, (starting
+; position), 16569, 1, (ending position)". This tells FDSTools that the marker
+; is a concatenation of two fragments, where the first fragment ends at
+; position 16569 and the second fragment starts at position 1. Similarly, for a
+; fragment that spans position 3107 in the rCRS (which is nonexistent), you
+; must specify "M, (starting position), 3106, 3108, (ending position)".
+CSF1PO_v3      = 5,150076324,150076375
+D10S1248_v3    = 10,129294244,129294295
+D12S391_v5     = 12,12297020,12297095 
+D13S317_v3     = 13,82148025,82148068 
+D16S539_v3     = 16,86352702,86352745 
+D17S1301_v3    = 17,74684855,74684902
+D18S51_v1      = 18,63281667,63281738 
+D19S433_v3     = 19,29926235,29926298
+D1S1656_v2     = 1,230769616,230769683
+D20S482_v3     = 20,4525692,4525747
+D21S11_v2      = 21,19181973,19182099 
+D22S1045_v5    = 22,37140287,37140337
+D2S1338_v3     = 2,218014859,218014950
+D2S441_v1      = 2,68011947,68011994
+D3S1358_v2     = 3,45540739,45540802
+D4S2408_v3     = 4,31302798,31302833
+D5S818_v2      = 5,123775556,123775599 
+D6S1043_v3     = 6,91740225,91740272
+D7S820_v1      = 7,84160226,84160277
+D8S1179_v2     = 8,124894865,124894916
+D9S1122_v6     = 9,77073826,77073873
+FGA_v2         = 4,154587736,154587823 
+PentaD_v2      = 21,43636205,43636269
+PentaE_v2      = 15,96831015,96831039
+SE33_v5        = 6,88277144,88277245
+TH01_v3        = 11,2171088,2171115
+TPOX_v2        = 2,1489653,1489684
+vWA_v3         = 12,5983977,5984044
+
+[flanks]
+; The TSSV tool will use a pair of short anchor sequences just outside the
+; reported range of each marker (e.g., primer sequences) to identify which
+; input reads correspond to which marker. By default, flanking sequence is
+; loaded from the genome reference sequence, but an alternative sequence can be
+; specified here. To do so, provide two comma-separated values: one for the
+; left and one for the right flank. Each value can be 'REF' or an explicit
+; anchor sequence to use. The sequence may contain IUPAC codes for ambiguous
+; positions to account for degenerate bases in the primers or for
+; bisulfite-converted targets in methylation-based studies (e.g., Y matches
+; either C or T).
+CSF1PO_v3      = GTGCACACTTGGACAGCATTT,AGGCAGTTACTGTTAATATCTTCATTTTAC
+D10S1248_v3    = AGGACCAATCTGGTCACAAACA,GTTCCTTTAATAACAAGACAAGGGA
+D12S391_v5     = GAATCAACAGGATCAATGGATGCAT,GGAATTAGCTCAAGTGATATGGAGG
+D13S317_v3     = CTCTGGACTCTGACCCATCTAACG,TATGGCTCAACCCAAGTTGAAGGA
+D16S539_v3     = ATCCCAAGCTCTTCCTCTTCCC,ATAAAAATGGAATCACTCTGTAGGCT
+D17S1301_v3    = GACAGAGCAAGGTTCTGCCT,CCATTGTATAGATAAGTGAAAATTCATGGT
+D18S51_v1      = ACTCTGAGTGACAAATTGAGACCT,AGAAAAAGAAAAGAAATAGTAGCAACTGT
+D19S433_v3     = TTGGTGCACCCATTACCCG,CTTATTCTGTTGCCCAGGCTG
+D1S1656_v2     = AGAGAAATAGAATCACTAGGGAACCA,ACAGTTGACCCTTGAGCAACA
+D20S482_v3     = GAGTTCTTCAGAGACACCGAAC,TTGATTCATGTGGTTATGGAGGC
+D21S11_v2      = GGGACTTTTCTCAGTCTCCATAAAT,CCAGTCTATCTACCTCCTATTAGTCT
+D22S1045_v5    = CTGTCCTAGCCTTCTTATAGCTGC,TGCCAATCATACATTCGCGTGAT
+D2S1338_v3     = CCTGCAGGTGGCCCATAA,CCAAATCCACTGGCTCCCTC
+D2S441_v1      = GCCAGGAACTGTGGCTCAT,AACACCACAGCCACTTAGCT
+D3S1358_v2     = CTCATGAAATCAACAGAGGCTTG,CACCCAGATTGGACTGCAGT
+D4S2408_v3     = GCACTATGATTCATTTCCATAGGGT,CAGTGGATGAATTGAAGTTGAAGTT
+D5S818_v2      = GCTTTTTAGCCAAGTGATTCCAA,AAGAGGAAAATCACCCTTGTCAC
+D6S1043_v3     = AATTGTATGAGCCACTTCCCATAATA,TCCACCCATCCTTGCACACT
+D7S820_v1      = GAATTGCACCAAATATTGGTAATTAAATGT,TTCGTTCTAAACTATGACAAGTGTTCT
+D8S1179_v2     = CACACGGCCTGGCAACTTAT,TCTACAGGATAGGTAAATAAATTAAGGCA
+D9S1122_v6     = GAAGATCTGATATTCACATATCTCATTGTAT,CTTTCAGAAGCTAAATTGGTGTCTTT
+FGA_v2         = AGTGATTTGTCTGTAATTGCCAGC,GGTTACAGTTTAATCTGTGAGTTCA
+PentaD_v2      = CAGAGCAAGACACCATCTCAAG,AAATCGTTATGACCATAGGTTAGGC
+PentaE_v2      = TATTTGGGTTATTAATTGAGAAAACTCCTT,AGTCTTGCTCAGTCGCCCA
+SE33_v5        = GAGCGCGGTGATAGCATCA,AGTTTCACTCTTGTCGCCCAGA
+TH01_v3        = AGGTCACAGGGAACACAGACT,CAGGCCAATGGGAATCACC
+TPOX_v2        = TGGCACAGAACAGGCACTTA,ACGCTGACAAGGACAGAAGG
+vWA_v3         = ATAGGACAGATGATAAATACATAGGATGG,GTCACATACTGATTATTCTTATCATCCACT
+
+[flank_length]
+; The number of flanking bases used by TSSV can be controlled with the
+; -L/--flank-length option of that tool. If the flank length of a specific
+; marker needs to be limited to a specific value or range of values, this can
+; be specified here. Provide four numbers for each such marker: the minimum and
+; maximum possible length for the left flank, followed by the minimum and
+; maximum possible length for the right flank.
+
+[max_expected_copies]
+; By default, the Allelefinder tool will report up to 2 alleles per marker, but
+; only a single allele for markers on mitochondrial DNA or on the Y chromosome.
+; If this is incorrect, specify the maximum expected number of copies (i.e.,
+; alleles) for each marker in a single-contributor reference sample here.
+
+[expected_allele_length]
+; Specify one or two values for each marker. The first value gives the expected
+; minimum length (in nucleotides, excluding flanks) of the alleles and the
+; second value (if given) specifies the maximum allele length expected for that
+; marker (both inclusive). The TSSV tool will filter sequences that have a
+; length outside this range.
+CSF1PO_v3      = 63
+D10S1248_v3    = 61
+D12S391_v5     = 89
+D13S317_v3     = 84
+D16S539_v3     = 52
+D17S1301_v3    = 56
+D18S51_v1      = 94
+D19S433_v3     = 92
+D1S1656_v2     = 87
+D20S482_v3     = 67
+D21S11_v2      = 137
+D22S1045_v5    = 59
+D2S1338_v3     = 100
+D2S441_v1      = 57
+D3S1358_v2     = 75
+D4S2408_v3     = 45
+D5S818_v2      = 56
+D6S1043_v3     = 59
+D7S820_v1      = 82
+D8S1179_v2     = 64
+D9S1122_v6     = 68
+FGA_v2         = 99
+PentaD_v2      = 98
+PentaE_v2      = 37
+SE33_v5        = 157
+TH01_v3        = 39
+TPOX_v2        = 46
+vWA_v3         = 96

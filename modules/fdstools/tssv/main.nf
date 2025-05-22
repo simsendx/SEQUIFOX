@@ -4,11 +4,7 @@ process FDSTOOLS_TSSV {
 
     cpus 1
 
-    publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/fdstools/${meta.id}/"},
-        mode: params.publish_dir_mode,
-        pattern: "*"
-    ]
+    publishDir "${params.outdir}/${workflow.runName}/fdstools/pre_umi/${meta.id}/", mode: params.publish_dir_mode, pattern: "*"
 
     input:
     tuple val(meta), path(reads)
@@ -17,22 +13,28 @@ process FDSTOOLS_TSSV {
     val mismatches
 
     output:
-    tuple val(meta), path("tssv_out"), emit: tssv_out
-    tuple val(meta), path("tssv_out/*/paired.fq.gz"), emit: paired_fq
+    tuple val(meta), path("tssv_out")                  , emit: tssv_out
+    tuple val(meta), path("tssv_out/*/paired.fq.gz")   , emit: paired_fq
+    path "versions.yml"                                , emit: versions
 
     script:
     def args = task.ext.args ?: ''
     """
-    mkdir tssv_out
-
     fdstools tssv \\
+        ${args} \\
         --num-threads $task.cpus \\
-        --dir tssv_out \\
+        --dir . \\
         --indel-score $indel_score \\
         --mismatches $mismatches \\
         --minimum 2 \\
         --report preumi.html \\
         $library_file \\
         $reads
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        tssv: \$(fdstools tssv -v | awk '{print \$2}')
+        fdstools: \$(fdstools tssv -v | sed -n 's/.*(part of fdstools \\(.*\\))/\\1/p')
+    END_VERSIONS
     """
 }

@@ -3,12 +3,8 @@ process UMIERRORCORRECT_PREPROCESSING {
 
     cpus 2
 
-    publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/preprocessing/${meta.id}"},
-        mode: params.publish_dir_mode,
-        pattern: "*_umis_in_header.fastq.gz"
-    ]
-
+    publishDir "${params.outdir}/${workflow.runName}/preprocessing/${meta.id}", mode: params.publish_dir_mode, pattern: "*_umis_in_header.fastq.gz"
+    
     input:
     tuple val(meta), path(reads)
     val umi_length

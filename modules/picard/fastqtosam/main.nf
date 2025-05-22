@@ -4,11 +4,7 @@ process PICARD_FASTQTOSAM {
     //https://gatk.broadinstitute.org/hc/en-us/articles/360036351132-FastqToSam-Picard
     container 'quay.io/biocontainers/picard:3.4.0--hdfd78af_0'
 
-    publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/preprocessing/${meta.id}"},
-        mode: params.publish_dir_mode,
-        pattern: "*.bam"
-    ]
+    publishDir "${params.outdir}/${workflow.runName}/preprocessing/${meta.id}", mode: params.publish_dir_mode, pattern: "*.bam"
 
     input:
     tuple val(meta), path(reads)

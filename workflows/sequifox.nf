@@ -73,10 +73,7 @@ workflow SEQUIFOX {
     // UMIErrorCorrect
     //UMIERRORCORRECT(FASTQTOBAM.out.bam)
 
-    //
 
 
-
-    emit:
-
+    //emit:
 }

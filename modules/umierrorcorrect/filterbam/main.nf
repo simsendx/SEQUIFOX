@@ -1,11 +1,7 @@
 process UMIERRORCORRECT_FILTERBAM {
     tag "$meta.id"
 
-    publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/out/${meta.id}"},
-        mode: params.publish_dir_mode,
-        pattern: "*_filtered.bam"
-    ]
+    publishDir "${params.outdir}/${workflow.runName}/out/${meta.id}", mode: params.publish_dir_mode, pattern: "*_filtered.bam"
 
     input:
     tuple val(meta), path(bam)

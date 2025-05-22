@@ -5,11 +5,7 @@ process FGBIO_FASTQTOBAM {
     //conda "bioconda::fgbio=2.4.0"
     container 'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc'
 
-    publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/preprocessing/fgbio/${meta.id}"},
-            mode: params.publish_dir_mode,
-            pattern: "*.bam"
-    ]
+    publishDir "${params.outdir}/${workflow.runName}/preprocessing/fgbio/${meta.id}", mode: params.publish_dir_mode, pattern: "*.bam"
 
     input:
     tuple val(meta), path(reads)
@@ -32,9 +28,9 @@ process FGBIO_FASTQTOBAM {
         FastqToBam \\
         --input $reads \\
         --read-structures $read_structures \\
-        --sample $meta.id \\
-        --library $meta.id \\
-        --output ${meta.id}.bam \\
+        --sample $prefix \\
+        --library $prefix \\
+        --output ${prefix}.bam \\
         ${args}
 
      cat <<-END_VERSIONS > versions.yml

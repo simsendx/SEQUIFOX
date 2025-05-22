@@ -1,0 +1,46 @@
+name: adapterremoval
+description: Trim adapter sequences and low quality bases from data in FASTQ format.
+keywords:
+  - fastq
+  - adapter
+  - qc
+tools:
+  - bwa:
+      description: |
+        AdapterRemoval trims adapter sequences and low quality bases from High-Throughput Sequencing (HTS) data in FASTQ format. 
+        For paired-end data, AdapterRemoval can merge overlapping paired-ended reads into (longer) consensus sequences. 
+      homepage: https://github.com/MikkelSchubert/adapterremoval
+      documentation: https://adapterremoval.readthedocs.io/en/2.3.x/
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+          e.g. [ id:'test', single_end:false ]
+    - fastq:
+        type: file
+        description: Input  fastq files
+output:
+  - index:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - fastq:
+          type: file
+          description: Trimmed fastq files
+          pattern: "*.{fastq,fq}.gz"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@drpatelh"
+  - "@maxulysse"
+  - "@sfilges"
+maintainers:
+  - "@sfilges"

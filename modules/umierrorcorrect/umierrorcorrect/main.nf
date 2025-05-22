@@ -3,11 +3,7 @@ process UMIERRORCORRECT_UMIERRORCORRECT {
 
     cpus 4
 
-    publishDir = [
-        path: {"${params.outdir}/${workflow.runName}/umierrorcorrect/${meta.id}"},
-        mode: params.publish_dir_mode,
-        pattern: "*"
-    ]
+    publishDir "${params.outdir}/${workflow.runName}/umierrorcorrect/${meta.id}", mode: params.publish_dir_mode, pattern: "*"
 
     input:
     tuple val(meta), path(bam)

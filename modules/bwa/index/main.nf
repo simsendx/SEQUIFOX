@@ -2,6 +2,7 @@ process BWA_INDEX {
     tag "$fasta"
     label 'process_single'
 
+    conda "${moduleDir}/environment.yml"
     container 'quay.io/biocontainers/bwa:0.7.18--he4a0461_0'
 
     input:

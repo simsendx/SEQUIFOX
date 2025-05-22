@@ -6,11 +6,7 @@ process FASTQC {
 
     cpus 4
 
-    publishDir = [
-            path: {"${params.outdir}/${workflow.runName}/reports/fastqc/${meta.id}"},
-            mode: params.publish_dir_mode,
-            pattern: "*.{html,json,log}"
-    ]
+    publishDir "${params.outdir}/${workflow.runName}/reports/fastqc/${meta.id}", mode: params.publish_dir_mode, pattern: "*.{html,json,log}"
 
     input:
     tuple val(meta), path(reads)

@@ -17,6 +17,7 @@ workflow UMIEC_CONSENSUS {
     fasta
 
     main:
+    ch_versions = Channel.empty()
 
     SAMTOOLS_FAIDX(fasta)
 
@@ -25,6 +26,7 @@ workflow UMIEC_CONSENSUS {
 
     // Map preprocessed reads to STR markers
     FDSTOOLS_TSSV(EXTRACTUMIS.out.umi_fastq, library_file, params.indel_score, params.mismatches)
+    ch_versions = ch_versions.mix(FDSTOOLS_TSSV.out.versions)
 
     // Convert fastq to bam (alignment free)
     FASTQTOBAM(FDSTOOLS_TSSV.out.tssv_out, bed_file, library_file)
@@ -40,4 +42,6 @@ workflow UMIEC_CONSENSUS {
     cons_bam     = UMIERRORCORRECT.out.cons_bam
     cons_bai     = UMIERRORCORRECT.out.cons_bai
     cons_file    = UMIERRORCORRECT.out.cons_tsv
+
+    versions     = ch_versions
 }
