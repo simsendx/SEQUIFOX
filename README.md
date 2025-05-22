@@ -28,7 +28,7 @@ If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -p
 nextflow run simsendx/sequifox -r <VERSION> -profile <PROFILE> --samplesheet ./samplesheet.csv --outdir ./my-results 
 ```
 
-`-r <VERSION>` is optional but strongly recommended for reproducibility and should match the latest version.
+`-r <VERSION>` is optional but strongly recommended for reproducibility and should match the latest version of the pipeline.
 
 `-profile <PROFILE>` is mandatory and should reflect any pipeline profile specified in the profile section.
 
@@ -47,13 +47,17 @@ work                # Directory containing the nextflow working files
 
 ### Optional parameters
 
-`--fasta` Reference fasta, otherwise pulls igenomes hg38
-`--call_min_reads` Default is 3, minimum number os reads required to form a consensus read
-`--library_file` Library file for FDStools, uses default otherwise.
-`--bed_file` Bed file for UMIErrorCorrect annotation, uses default otherwise. Not required in fgbio workflow.
-`--ini_file` Initilisation file for FDStools pipeline. uses default otherwise.
+`--fasta` Reference fasta, otherwise pulls igenomes hg38 (full human genome)
 
-Default files are located in the assets folder.
+`--call_min_reads` Default is 3, minimum number of reads required to form a consensus read
+
+`--library_file` Library file for FDStools, uses defaults otherwise.
+
+`--bed_file` Bed file for UMIErrorCorrect annotation, uses defaults otherwise. Not required in fgbio workflow.
+
+`--ini_file` Initilisation file for FDStools pipeline. uses defaults otherwise.
+
+Default files are located in the assets folder and based on SiMSen-Seq assays.
 
 
 ## Pipeline overview
@@ -78,25 +82,19 @@ The other workflow is based on [FGBIO](https://github.com/fulcrumgenomics/fgbio/
 best practices which uses UMI and mapping location for consensus family generation. The default piepline is run without any 
 additional flag. To run the fgbio workflow, run the pipeline with `--mode fgbio`.
 
-*NOTE!* If running fgbio mode, the reference fasta will be indexed every time, which can take ~1 hour if using the entire human genome.
-This will be updated in the future!
+> [!WARNING]
+> If running fgbio mode, the reference fasta will be indexed every time, which can take ~1 hour if using the entire human genome.
+> This will be updated in the future!
 
 ### Annotation
 
 STR markers are mapped by FDStools from the UMI corrected files generated in the previous step.
 
-## Tools used
-
-- [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval) *NOTE!* Not used in current iteration of the pipeline.
-- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false). *NOTE!* Not used in current iteration of the pipeline.
-- [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH used in the original pipeline UMIec_forensics; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
-- [FDStools](https://www.fdstools.nl/tools.html)
-- Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
-- [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md); alternative tools for consensus read formation.
-
 ## Detailed installation instructions
 
 ### Nextflow
+
+For the most up-to-date installation instructions, please refer to the official [Nextflow docs](https://www.nextflow.io/docs/latest/install.html#installation).
 
 Nextflow requires Bash 3.2 (or later) and Java 17 (or later, up to 24) to be installed. To see which version of Java you have, run the following command:
 
@@ -104,9 +102,7 @@ Nextflow requires Bash 3.2 (or later) and Java 17 (or later, up to 24) to be ins
 java -version
 ```
 
-If you don’t have a compatible version of Java installed, it is recommended that you install it through SDKMAN!, and that you use the latest Long-Term-Support (LTS) version of Temurin. See Which version of JDK should I use? for more information about different versions of Java.
-
-To install Java with SDKMAN:
+If you don’t have a compatible version of Java installed, it is recommended that you install it through SDKMAN!, and that you use the latest Long-Term-Support (LTS) version of Temurin. To install Java with SDKMAN:
 
 1. Install SDKMAN:
 
@@ -114,7 +110,7 @@ To install Java with SDKMAN:
 curl -s https://get.sdkman.io | bash
 ```
 
-2. Open a new terminal.
+2. Restart or open a new terminal.
 
 
 3. Install Java
@@ -154,60 +150,39 @@ mv nextflow $HOME/.local/bin/
 nextflow info
 ```
 
-9. Install a suitable container management tool, such as docker or podman. We will use podman as an example:
-
-#### On Linux (Debian/Ubuntu)
+9. Install a suitable container management tool, such as docker or podman. We will use podman as an example on Linux (Debian/Ubuntu)
 
 ```bash
 sudo apt-get -y install podman
 ```
 
-#### On Mac
+Installation instructions for other operating systems (Other Linux distributions, MacOS, Windows), see the [podman docs](https://podman.io/docs/installation).
 
-```bash
-brew install podman
-```
+## Tools used
 
-After installing, you need to create and start your first Podman machine:
+- [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH used in the original pipeline UMIec_forensics; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
+- [FDStools](https://www.fdstools.nl/tools.html)
+- Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
+- [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md); alternative tools for consensus read formation.
 
-```bash
-podman machine init
-podman machine start
-```
+- [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval) *NOTE!* Not used in current iteration of the pipeline.
+- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false). *NOTE!* Not used in current iteration of the pipeline.
 
-You can then verify the installation information using:
 
-```bash
-podman info
-```
+## Verified Vendors, Kits, and Assays
+
+> [!WARNING]
+> The following Vendors, Kits, and Assays are provided for informational purposes only.
+> _No warranty for the accuracy or completeness of the information or parameters is implied._
+
+| Verified | Assay      | Company           | Strand | Randomness | UMI Location     | Read Structure  | URL                                                                                                                                                                                 |
+| -------- | --------------------------------------------------------- | --------------------------- | ------ | ---------- | ---------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|        |                |         |  |      |                  |                 |                                |
+
 
 ## Advanced Options
 
-### Generate new container images
 
-Nextflow uses containers natively and these provide many additional
-benefits, including easy redistribution, dependency management and
-stability.
 
-To create a container image for the tools which are not found in common
-repositories, such as quay.io, run the following (if using podman) 
-using the dockerfiles in the assets folder of this repository:
 
-#### fdstools
-```bash
-podman build -f fdstools.dockerfile -t fdstools:2.1.1 --platform linux/amd64
-```
-
-#### FLASH
-```bash
-podman build -f flash.dockerfile -t flash:1.2.11 --platform linux/amd64
-```
-
-#### UMIErrorCorrect
-```bash
-podman build -f umierrorcorrect.dockerfile -t umierrorcorrect:0.29 --platform linux/amd64
-```
-
-The images can now be run using `podman run localhost/<tag>` where
-the tag is the name specified with `-t`. The local image needs to be 
-specified in the config file for the corresponsing nextflow process.
+## Ackknowledgements

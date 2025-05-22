@@ -1,0 +1,28 @@
+### Generate new container images
+
+Nextflow uses containers natively and these provide many additional
+benefits, including easy redistribution, dependency management and
+stability.
+
+To create a container image for the tools which are not found in common
+repositories, such as quay.io, run the following (if using podman) 
+using the dockerfiles in the assets folder of this repository:
+
+#### fdstools
+```bash
+podman build -f fdstools.dockerfile -t fdstools:2.1.1 --platform linux/amd64
+```
+
+#### FLASH
+```bash
+podman build -f flash.dockerfile -t flash:1.2.11 --platform linux/amd64
+```
+
+#### UMIErrorCorrect
+```bash
+podman build -f umierrorcorrect.dockerfile -t umierrorcorrect:0.29 --platform linux/amd64
+```
+
+The images can now be run using `podman run localhost/<tag>` where
+the tag is the name specified with `-t`. The local image needs to be 
+specified in the config file for the corresponsing nextflow process.
