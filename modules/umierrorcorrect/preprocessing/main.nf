@@ -1,7 +1,8 @@
 process UMIERRORCORRECT_PREPROCESSING {
     tag "$meta.id"
+    label 'process_low'
 
-    cpus 2
+    container 'quay.io/sfilges/umierrorcorrect:v0.31'
 
     publishDir "${params.outdir}/${workflow.runName}/preprocessing/${meta.id}", mode: params.publish_dir_mode, pattern: "*_umis_in_header.fastq.gz"
     

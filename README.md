@@ -9,7 +9,7 @@
 3. Download the pipeline and test it on a minimal dataset with a single command. For the profile choose whichever container environment you are using, e.g. docker, podman or singularity.
 
 ```bash
-nextflow run simsendx/sequifox --samplesheet <path_to_samplesheet> -profile podman
+nextflow run simsendx/sequifox --samplesheet samplesheet.csv -profile podman
 ```
 
 If running on Mac with ARM chips, add the arm profile, e.g. `nextflow run ... -profile docker,arm`.
@@ -88,8 +88,9 @@ best practices which uses UMI and mapping location for consensus family generati
 additional flag. To run the fgbio workflow, run the pipeline with `--mode fgbio`.
 
 > [!WARNING]
-> If running fgbio mode, the reference fasta will be indexed every time, which can take ~1 hour if using the entire human genome.
-> This will be updated in the future!
+> If running fgbio mode, the reference fasta will be indexed unless an existing index is provided. Indexing can take >1 hour for the entire human genome.
+> If you have already generated a bwa index for the same reference, for example after running the pipeline once, you can supply
+> the path to the directory containing index files with `--bwa_index`.
 
 ### Annotation
 
@@ -146,6 +147,14 @@ sudo apt-get -y install podman
 
 Installation instructions for other operating systems (Other Linux distributions, MacOS, Windows), see the [podman docs](https://podman.io/docs/installation).
 
+### Command line help
+
+To view all parameters that may be supplied via the command line, use the `--help` flag:
+
+```bash
+nextflow run simsendx/sequifox --help
+```
+
 ## Tools used
 
 - [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH used in the original pipeline UMIec_forensics; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
@@ -168,9 +177,50 @@ Installation instructions for other operating systems (Other Linux distributions
 |        |                |         |  |      |                  |                 |                                |
 
 
+## Sequencing platforms
+
+The pipeline is intended for data generated on Illumina platforms. Data from all current Illumina systems is supported. However, during the preprocessing step, FASTP automatically trims polyG sequences from the 3' end of reads generated with NovaSeq and NextSeq platforms.
+
+The pipelines supports single-end and paired-end reads, although using paired-end reads with a minimum overlap of `overlap_len_require` (see below) is recommended. If a significant number of reads are shorter than `--min_read_length` or do not overlap sufficiently, most or all usable data may be discarded.
+
+It is recommended to run 300 cycles paired-end (600 cycles total), otherwise there might be insufficient overlap for long STR markers. See the
+advanced options below for parameters that can be adjusted data other than the above is used.
+
+## Troubleshooting
+
+### Pipeline stuck or did not complete
+
+Abort, if the pipeline seems stuck, using CTRL + C and try to resume the pipeline:
+
+```bash
+nextflow run simsendx/sequifox --samplesheet samplesheet.csv -profile podman -resume
+```
+
+Resume will use cached intermediary files, which for long pipelines allows retrying without much addtional waiting time.
+
+### Stuck on revisions
+
+If you get a warning like the following:
+
+```bash
+Project <pipeline> is currently stuck on revision: dev -- you need to explicitly specify a revision with the option -r in order to use it
+```
+
+This is a Nextflow error, with less-commonly seen Git ‘terminology’. What this means is that you have multiple versions of the pipeline pulled (e.g. 2.0.0, 2.1.0, 2.1.1, dev etc.), and it is not sure which one to use. Therefore, with every `nextflow run <PIPELINE>` command you should always indicate which version with `-r`.
+
+
 ## Advanced Options
 
+### Overlap correction
 
+By default overlapping paired reads are errorcorrected. If enabled, the following parameters determine the read correction (with default values shown):
 
+```bash
+--overlap_len_require 100        # the minimum length to detect overlapped region of PE read
+--overlap_diff_limit 5           # the maximum number of mismatched bases to detect overlapped region of PE reads
+--overlap_diff_percent_limit 20  # maximum percentage of mismatched bases to detect overlapped region of PE reads
+```
+
+This can be disabled by setting `--correction false`. 
 
 ## Ackknowledgements

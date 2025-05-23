@@ -1,5 +1,6 @@
 process MULTIQC {
-
+    label 'process_medium'
+    
     container 'quay.io/biocontainers/multiqc:1.25.1--pyhdfd78af_0'
 
     publishDir "${params.outdir}/${workflow.runName}/reports/", mode: params.publish_dir_mode, pattern: "*.html"

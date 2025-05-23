@@ -14,7 +14,6 @@ workflow FGBIO_CONSENSUS {
 
     take:
     reads
-    read_structures
     fasta
     fai
     dict

@@ -13,13 +13,23 @@ workflow PREPARE_GENOME {
     main:
     versions = Channel.empty()
 
-    BWA_INDEX(fasta)
+    // Use user-provided bwa index or generate fresh index
+    if(params.bwa_index){
+        println("Using custom index.")
+        ch_index = files( "${params.bwa_index}/*{.amb,.ann,.bwt,.pac,.sa}" )
+        println "BWA index: ${ch_index}"
+    } else {
+        BWA_INDEX(fasta)
+        ch_index = BWA_INDEX.out.index
+        ch_index.view()
+        versions = versions.mix(BWA_INDEX.out.versions)
+    }
+
     // If aligner is bwa-mem
     SAMTOOLS_FAIDX(fasta)
     SAMTOOLS_DICT(fasta)
 
     // Gather versions of all tools used
-    versions = versions.mix(BWA_INDEX.out.versions)
     versions = versions.mix(SAMTOOLS_FAIDX.out.versions)
 
     emit:

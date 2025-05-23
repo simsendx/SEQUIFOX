@@ -2,6 +2,8 @@ process FDSTOOLS_STUTTERMARK {
     tag "$meta.id"
     label 'process_single'
 
+    container 'quay.io/sfilges/fdstools:2.1.1'
+
     publishDir "${params.outdir}/${workflow.runName}/fdstools/${meta.id}", mode: params.publish_dir_mode, pattern: "*_stutter.csv"
 
     input:

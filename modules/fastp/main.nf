@@ -15,6 +15,10 @@ process FASTP {
     val umi_length
     val spacer_length
     val min_read_length
+    val correction
+    val overlap_len_require
+    val overlap_diff_limit
+    val overlap_diff_percent_limit
 
     output:
     tuple val(meta), path('*_fastp.fastq.gz')   , emit: reads
@@ -27,6 +31,7 @@ process FASTP {
     script:
     def prefix = "${meta.id}"
     def merge_fastq = save_merged ? "-m --merged_out ${prefix}_merged.fastq.gz" : '' 
+    def overlap_reads = correction ? "--correction --overlap_len_require $overlap_len_require --overlap_diff_limit $overlap_diff_limit --overlap_diff_percent_limit $overlap_diff_percent_limit" : ''
     """
     [ ! -f ${prefix}_1.fastq.gz ] && ln -sf ${reads[0]} ${prefix}_1.fastq.gz
     [ ! -f ${prefix}_2.fastq.gz ] && ln -sf ${reads[1]} ${prefix}_2.fastq.gz
@@ -37,7 +42,7 @@ process FASTP {
         --out2 ${prefix}_2_fastp.fastq.gz \\
         --json ${prefix}.fastp.json \\
         --html ${prefix}.fastp.html \\
-        --correction \\
+        $overlap_reads \\
         $merge_fastq \\
         -l $min_read_length \\
         --thread $task.cpus \\

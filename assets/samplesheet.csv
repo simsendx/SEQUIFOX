@@ -2,3 +2,6 @@ sample,fastq_1,fastq_2
 17-Simsen28-2800M-5-1-2,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/17-Simsen28-2800M-5-1-2_S17_L001_R1_001.fastq.gz,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/17-Simsen28-2800M-5-1-2_S17_L001_R2_001.fastq.gz
 18-Simsen28-CompC-5-1-5,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/18-Simsen28-CompC-5-1-5_S18_L001_R1_001.fastq.gz,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/18-Simsen28-CompC-5-1-5_S18_L001_R2_001.fastq.gz
 19-Simsen28-CompC-5-2-8,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/19-Simsen28-CompC-5-2-8_S19_L001_R1_001.fastq.gz,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/19-Simsen28-CompC-5-2-8_S19_L001_R2_001.fastq.gz
+20-Simsen28-CompA-5-1-10,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/20-Simsen28-CompA-5-1-10_S20_L001_R1_001.fastq.gz,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/20-Simsen28-CompA-5-1-10_S20_L001_R2_001.fastq.gz
+21-Simsen28-NTD02-5-1-12,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/21-Simsen28-NTD02-5-1-12_S21_L001_R1_001.fastq.gz,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/21-Simsen28-NTD02-5-1-12_S21_L001_R2_001.fastq.gz
+22-Simsen28-NTD07-5-1-14,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/22-Simsen28-NTD07-5-1-14_S22_L001_R1_001.fastq.gz,/Users/ctosimsen/Documents/GitHub/SEQUIFOX/data/22-Simsen28-NTD07-5-1-14_S22_L001_R2_001.fastq.gz

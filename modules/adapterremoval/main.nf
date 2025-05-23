@@ -16,8 +16,15 @@ process ADAPTERREMOVAL {
     def fq2 = "${reads[1]}"
     def adapter1 = 'AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT'
     def adapter2 = 'CAAGCAGAAGACGGCATACGAGATNNNNNNGTGACTGGAGTTCAGACGTGTGCTCTTCCG'
+    def args = task.ext.args ?: ''
     """
-    AdapterRemoval --file1 $fq1 --file2 $fq2 --threads $task.cpus
+    AdapterRemoval \\
+        --file1 $fq1 \\
+        --file2 $fq2 \\
+        --adapter1 $adapter1 \\
+        --adapter2 $adapter2 \\
+        --threads $task.cpus \\
+        $args
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

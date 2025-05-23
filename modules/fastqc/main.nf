@@ -18,7 +18,6 @@ process FASTQC {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     fastqc \\
         $args \\

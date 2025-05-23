@@ -62,7 +62,8 @@
             "type": "string"
         },
         "fasta": {
-            "type": "string"
+            "type": "string",
+            "default": "s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh38/Sequence/WholeGenomeFasta/Homo_sapiens_assembly38.fasta"
         },
         "publish_dir_mode": {
             "type": "string",
@@ -122,6 +123,25 @@
         },
         "mode": {
             "type": "string"
+        },
+        "bwa_index": {
+            "type": "string"
+        },
+        "overlap_len_require": {
+            "type": "integer",
+            "default": 100
+        },
+        "overlap_diff_limit": {
+            "type": "integer",
+            "default": 5
+        },
+        "overlap_diff_percent_limit": {
+            "type": "integer",
+            "default": 20
+        },
+        "correction": {
+            "type": "boolean",
+            "default": true
         }
     }
 }

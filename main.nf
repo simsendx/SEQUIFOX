@@ -49,8 +49,6 @@ workflow {
 
     // Initilialise versions and reports channels
     ch_versions = Channel.empty()
-    ch_reports  = Channel.empty()
-    ch_trim_reads = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
     // Getting user supplied files or else use build-in files (works for Simsen workflow only)
@@ -91,14 +89,24 @@ workflow {
     FASTQC_RAW(ch_fastqs)
     ch_versions = ch_versions.mix(FASTQC_RAW.out.versions)
 
-    ch_fastqc_raw_html = FASTQC_RAW.out.html
+    //ch_fastqc_raw_html = FASTQC_RAW.out.html
     ch_fastqc_raw_zip  = FASTQC_RAW.out.zip
 
     // Preprocessing with fastp:
     // - remove adapters and poly_g (2-color chemistry runs only)
     // - merge reads (if selected) and error correct
     // - perform basic quality filtering (read length, quality score)
-    FASTP(ch_fastqs, params.fastp_save_merged, params.umi_length, params.spacer_length, params.min_read_length)
+    FASTP(
+        ch_fastqs,
+        params.fastp_save_merged,
+        params.umi_length, 
+        params.spacer_length,
+        params.min_read_length, 
+        params.correction,
+        params.overlap_len_require, 
+        params.overlap_diff_limit, 
+        params.overlap_diff_percent_limit
+    )
     ch_versions = ch_versions.mix(FASTP.out.versions)
 
     // If reads are merged, use the merged fastqs downstream (FASTP.out.reads_merged). In FASTP, 
@@ -118,7 +126,7 @@ workflow {
 
     // Output file channels and collect for multiqc
     ch_trim_json        = FASTP.out.json
-    ch_fastqc_trim_html = FASTQC_MERGED.out.html
+    //ch_fastqc_trim_html = FASTQC_MERGED.out.html
     ch_fastqc_trim_zip  = FASTQC_MERGED.out.zip
 
     ch_multiqc_files = ch_multiqc_files.mix(
@@ -139,13 +147,16 @@ workflow {
     if(params.mode == 'fgbio') {
         // Prepare genome files (faidx index, samtools dict and bwa index)
         PREPARE_GENOME(ch_fasta)
-        FGBIO_CONSENSUS(ch_reads, params.read_structures, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa, ch_library_file)
+        FGBIO_CONSENSUS(ch_reads, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa, ch_library_file)
         ch_consensus_bam = FGBIO_CONSENSUS.out.consensus_bam
     } else {
         UMIEC_CONSENSUS(ch_reads, ch_bed_file, ch_library_file, ch_fasta)
         ch_consensus_bam = UMIEC_CONSENSUS.out.filtered_bam
     }
 
+    //
+    // Run fdstools
+    //
     FDSTOOLS(ch_consensus_bam, ch_library_file, ch_ini_file)
     ch_versions = ch_versions.mix(FDSTOOLS.out.versions)
 
@@ -154,7 +165,6 @@ workflow {
     //
     softwareVersionsToYAML(ch_versions)
         .collectFile(storeDir: "${params.outdir}/${workflow.runName}/pipeline_info", name: 'versions.yml', sort: true, newLine: true)
-        .set {ch_collated_versions}
 
     //
     // Multiqc

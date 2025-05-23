@@ -2,9 +2,9 @@ process FDSTOOLS_TSSV {
     tag "$meta.id"
     label 'process_single'
 
-    cpus 1
+    container 'quay.io/sfilges/fdstools:2.1.1'
 
-    publishDir "${params.outdir}/${workflow.runName}/fdstools/pre_umi/${meta.id}/", mode: params.publish_dir_mode, pattern: "*"
+    publishDir "${params.outdir}/${workflow.runName}/fdstools/pre_umi/${meta.id}/", mode: params.publish_dir_mode, pattern: "tssv_out/*"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process FDSTOOLS_TSSV {
     val mismatches
 
     output:
-    tuple val(meta), path("tssv_out")                  , emit: tssv_out
+    tuple val(meta), path("tssv_out")   , emit: tssv_out
     tuple val(meta), path("tssv_out/*/paired.fq.gz")   , emit: paired_fq
     path "versions.yml"                                , emit: versions
 
@@ -23,7 +23,7 @@ process FDSTOOLS_TSSV {
     fdstools tssv \\
         ${args} \\
         --num-threads $task.cpus \\
-        --dir . \\
+        --dir tssv_out \\
         --indel-score $indel_score \\
         --mismatches $mismatches \\
         --minimum 2 \\

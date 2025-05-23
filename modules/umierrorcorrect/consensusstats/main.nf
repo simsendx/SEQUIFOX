@@ -1,7 +1,8 @@
 process UMIERRORCORRECT_GETCONSENSUSSTATISTICS {
     tag "$meta.id"
+    label 'process_low'
 
-    cpus 4
+    container 'quay.io/sfilges/umierrorcorrect:v0.31'
 
     publishDir "${params.outdir}/${workflow.runName}/out/${meta.id}", mode: params.publish_dir_mode, pattern: "*"
 
