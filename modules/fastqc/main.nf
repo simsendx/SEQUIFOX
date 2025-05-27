@@ -2,9 +2,8 @@ process FASTQC {
     tag "$meta.id with $task.cpus cores"
     label 'process_medium'
 
+    conda "${moduleDir}/environment.yml"
     container 'quay.io/biocontainers/fastqc:0.12.1--hdfd78af_0'
-
-    cpus 4
 
     publishDir "${params.outdir}/${workflow.runName}/reports/fastqc/${meta.id}", mode: params.publish_dir_mode, pattern: "*.{html,json,log}"
 

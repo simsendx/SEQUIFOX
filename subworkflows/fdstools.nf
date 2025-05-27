@@ -1,9 +1,10 @@
-
+//
+// RUN FDSTOOLS PIPELINE
+//
 
 include { SAMTOOLS_BAMTOFQ                                 } from '../modules/samtools/bamtofq/main'
 include { FDSTOOLS_PIPELINE                                } from '../modules/fdstools/pipeline/main'
 include { FDSTOOLS_STUTTERMARK                             } from '../modules/fdstools/stuttermark/main'
-
 
 workflow FDSTOOLS {
 

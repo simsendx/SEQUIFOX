@@ -1,5 +1,8 @@
 # SEQUIFOX
 
+SEQUIFOX is a Nextflow pipeline for ultrasensitive analysis of Unique Molecular Identifier (UMI) tagged 
+sequencing data of Short Tandem Repeat (STR) in forensic genetics applications.
+
 ## Quick Start
 
 1. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=24.0.4`)
@@ -49,7 +52,7 @@ work                # Directory containing the nextflow working files
 
 `--bed_file` Bed file for UMIErrorCorrect annotation, uses defaults otherwise. Not required in fgbio workflow.
 
-`--ini_file` Initilisation file for FDStools pipeline. uses defaults otherwise.
+`--ini_file` Initialisation file for FDStools pipeline. uses defaults otherwise.
 
 Default files are located in the assets folder and based on SiMSen-Seq assays.
 
@@ -155,28 +158,6 @@ To view all parameters that may be supplied via the command line, use the `--hel
 nextflow run simsendx/sequifox --help
 ```
 
-## Tools used
-
-- [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH used in the original pipeline UMIec_forensics; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
-- [FDStools](https://www.fdstools.nl/tools.html)
-- Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
-- [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md); alternative tools for consensus read formation.
-
-- [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval) *NOTE!* Not used in current iteration of the pipeline.
-- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false). *NOTE!* Not used in current iteration of the pipeline.
-
-
-## Verified Vendors, Kits, and Assays
-
-> [!WARNING]
-> The following Vendors, Kits, and Assays are provided for informational purposes only.
-> _No warranty for the accuracy or completeness of the information or parameters is implied._
-
-| Verified | Assay      | Company           | Strand | Randomness | UMI Location     | Read Structure  | URL                                                                                                                                                                                 |
-| -------- | --------------------------------------------------------- | --------------------------- | ------ | ---------- | ---------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|        |                |         |  |      |                  |                 |                                |
-
-
 ## Sequencing platforms
 
 The pipeline is intended for data generated on Illumina platforms. Data from all current Illumina systems is supported. However, during the preprocessing step, FASTP automatically trims polyG sequences from the 3' end of reads generated with NovaSeq and NextSeq platforms.
@@ -208,6 +189,9 @@ Project <pipeline> is currently stuck on revision: dev -- you need to explicitly
 
 This is a Nextflow error, with less-commonly seen Git ‘terminology’. What this means is that you have multiple versions of the pipeline pulled (e.g. 2.0.0, 2.1.0, 2.1.1, dev etc.), and it is not sure which one to use. Therefore, with every `nextflow run <PIPELINE>` command you should always indicate which version with `-r`.
 
+## Performance benchmarks
+
+TBD
 
 ## Advanced Options
 
@@ -223,4 +207,19 @@ By default overlapping paired reads are errorcorrected. If enabled, the followin
 
 This can be disabled by setting `--correction false`. 
 
-## Ackknowledgements
+## Configuring runs on (cloud) compute clusters
+
+TODO: Add examples of custom config files for different cluster environments
+
+## Tools used
+
+- [FASTP](https://github.com/OpenGene/fastp) as an alternative to adapterremoval and FLASH used in the original pipeline UMIec_forensics; for details, see the [paper](https://academic.oup.com/bioinformatics/article/34/17/i884/5093234?login=false)
+- [FDStools](https://www.fdstools.nl/tools.html)
+- Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
+- [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md); alternative tools for consensus read formation.
+
+- [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval) *NOTE!* Not used in current iteration of the pipeline.
+- [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false). *NOTE!* Not used in current iteration of the pipeline.
+
+
+## Acknowledgements

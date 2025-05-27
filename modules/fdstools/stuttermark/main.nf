@@ -4,7 +4,7 @@ process FDSTOOLS_STUTTERMARK {
 
     container 'quay.io/sfilges/fdstools:2.1.1'
 
-    publishDir "${params.outdir}/${workflow.runName}/fdstools/${meta.id}", mode: params.publish_dir_mode, pattern: "*_stutter.csv"
+    publishDir "${params.outdir}/${workflow.runName}/fdstools/post_umi/${meta.id}", mode: params.publish_dir_mode, pattern: "*_stutter.csv"
 
     input:
     tuple val(meta), path(infile)

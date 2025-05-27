@@ -9,6 +9,8 @@ work/
 results/
 data/
 
+.nf-test.log
+
 # Log file
 *.log
 

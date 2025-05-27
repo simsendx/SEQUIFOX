@@ -142,6 +142,13 @@
         "correction": {
             "type": "boolean",
             "default": true
+        },
+        "fastp_umi": {
+            "type": "boolean"
+        },
+        "fastp_umiloc": {
+            "type": "string",
+            "default": "read1"
         }
     }
 }
