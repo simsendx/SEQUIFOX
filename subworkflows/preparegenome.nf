@@ -11,7 +11,7 @@ workflow PREPARE_GENOME {
     fasta // channel: [mandatory] fasta
 
     main:
-    versions = Channel.empty()
+    versions = channel.empty()
 
     // Use user-provided bwa index or generate fresh index
     if(params.bwa_index){
@@ -33,7 +33,8 @@ workflow PREPARE_GENOME {
     versions = versions.mix(SAMTOOLS_FAIDX.out.versions)
 
     emit:
-    bwa = BWA_INDEX.out.index.collect()          // path: bwa/*
+    // bwa = BWA_INDEX.out.index.collect()          // path: bwa/*
+    bwa = ch_index.collect()
     dict = SAMTOOLS_DICT.out.dict.collect()      // path: genome.fasta.dict
     fasta_fai = SAMTOOLS_FAIDX.out.fai.collect() // path: genome.fasta.fai
     versions                                     // channel: [ versions.yml ]

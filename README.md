@@ -7,7 +7,7 @@ sequencing data of Short Tandem Repeat (STR) in forensic genetics applications.
 
 1. Install [`Nextflow`](https://www.nextflow.io/docs/latest/getstarted.html#installation) (`>=24.0.4`)
 
-2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) (you can follow [this tutorial](https://singularity-tutorial.github.io/01-installation/)), [`Podman`](https://podman.io/)
+2. Install any of [`Docker`](https://docs.docker.com/engine/installation/), [`Podman`](https://podman.io/), [`Singularity`](https://www.sylabs.io/guides/3.0/user-guide/) (you can follow [this tutorial](https://singularity-tutorial.github.io/01-installation/))
 
 3. Download the pipeline and test it on a minimal dataset with a single command. For the profile choose whichever container environment you are using, e.g. docker, podman or singularity.
 
@@ -93,7 +93,8 @@ additional flag. To run the fgbio workflow, run the pipeline with `--mode fgbio`
 > [!WARNING]
 > If running fgbio mode, the reference fasta will be indexed unless an existing index is provided. Indexing can take >1 hour for the entire human genome.
 > If you have already generated a bwa index for the same reference, for example after running the pipeline once, you can supply
-> the path to the directory containing index files with `--bwa_index`.
+> the path to the directory containing index files with `--bwa_index`. Providing a smaller reference genome, focusing only on the targeted STR regions,
+> will also significantly speed up the computation.
 
 ### Annotation
 
@@ -142,7 +143,7 @@ Done :)
 
 ### Container management 
 
-Install a suitable container management tool, such as docker or podman. We will use podman as an example on Linux (Debian/Ubuntu)
+Install a suitable container management tool, such as docker or podman. For example, to use podman on Linux (Debian/Ubuntu), run:
 
 ```bash
 sudo apt-get -y install podman

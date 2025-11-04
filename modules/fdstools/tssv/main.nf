@@ -21,7 +21,6 @@ process FDSTOOLS_TSSV {
     def args = task.ext.args ?: ''
     """
     fdstools tssv \\
-        ${args} \\
         --num-threads $task.cpus \\
         --dir tssv_out \\
         --indel-score $indel_score \\
@@ -29,7 +28,8 @@ process FDSTOOLS_TSSV {
         --minimum 2 \\
         --report preumi.html \\
         $library_file \\
-        $reads
+        $reads \\
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

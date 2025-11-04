@@ -17,7 +17,7 @@ workflow UMIEC_CONSENSUS {
     fasta
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     SAMTOOLS_FAIDX(fasta)
 

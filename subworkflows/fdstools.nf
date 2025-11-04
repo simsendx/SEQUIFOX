@@ -14,7 +14,7 @@ workflow FDSTOOLS {
     ini_file
 
     main:
-    ch_versions = Channel.empty()
+    ch_versions = channel.empty()
 
     SAMTOOLS_BAMTOFQ(consensus_bam)
     ch_versions = ch_versions.mix(SAMTOOLS_BAMTOFQ.out.versions)
