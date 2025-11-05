@@ -68,6 +68,7 @@ process FASTP {
             -l $min_read_length \\
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
+            --trim_poly_x \\
             $args \\
             2> >(tee ${prefix}.fastp.log >&2)
 

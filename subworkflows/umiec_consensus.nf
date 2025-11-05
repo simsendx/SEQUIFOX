@@ -32,7 +32,14 @@ workflow UMIEC_CONSENSUS {
     FASTQTOBAM(FDSTOOLS_TSSV.out.tssv_out, bed_file, library_file)
 
     // Run UMIErrorCorrect
-    UMIERRORCORRECT(FASTQTOBAM.out.bam, FASTQTOBAM.out.bai, bed_file, fasta, SAMTOOLS_FAIDX.out.fai, params.consensus_method)
+    UMIERRORCORRECT(
+        FASTQTOBAM.out.bam,
+        FASTQTOBAM.out.bai,
+        bed_file, fasta,
+        SAMTOOLS_FAIDX.out.fai,
+        params.consensus_method,
+        params.groupreadsbyumi_edits
+    )
 
     // Remove reads with less than min_reads support
     FILTERBAM(UMIERRORCORRECT.out.cons_bam, UMIERRORCORRECT.out.cons_bai, params.call_min_reads)

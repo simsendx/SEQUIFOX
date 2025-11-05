@@ -115,7 +115,7 @@
         },
         "min_read_length": {
             "type": "integer",
-            "default": 100
+            "default": 75
         },
         "consensus_method": {
             "type": "string",
@@ -129,7 +129,7 @@
         },
         "overlap_len_require": {
             "type": "integer",
-            "default": 100
+            "default": 50
         },
         "overlap_diff_limit": {
             "type": "integer",
@@ -149,6 +149,13 @@
         "fastp_umiloc": {
             "type": "string",
             "default": "read1"
+        },
+        "min_mapping_quality": {
+            "type": "integer",
+            "default": 20
+        },
+        "include_non_pf_reads": {
+            "type": "boolean"
         }
     }
 }

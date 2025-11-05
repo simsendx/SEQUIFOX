@@ -9,6 +9,7 @@ work/
 results/
 data/
 
+.nf-test/
 .nf-test.log
 
 # Log file

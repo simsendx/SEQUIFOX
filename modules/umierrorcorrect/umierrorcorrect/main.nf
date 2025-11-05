@@ -13,6 +13,7 @@ process UMIERRORCORRECT_UMIERRORCORRECT {
     tuple val(meta4), path(fasta)
     tuple val(meta5), path(fai)
     val consensus_method
+    val edit_distance
 
     output:
     tuple val(meta), path("*_cons.tsv"), emit: cons_tsv
@@ -29,6 +30,7 @@ process UMIERRORCORRECT_UMIERRORCORRECT {
         -r $fasta \\
         -c $consensus_method \\
         -s ${meta.id} \\
-        -t $task.cpus
+        -t $task.cpus \\
+        -d ${edit_distance}
     """
 }
