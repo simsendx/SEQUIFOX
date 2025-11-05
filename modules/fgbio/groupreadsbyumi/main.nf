@@ -5,10 +5,14 @@ process FGBIO_GROUPREADSBYUMI {
     //conda "bioconda::fgbio=2.4.0"
     container 'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc'
 
+    publishDir "${params.outdir}/${workflow.runName}/fgbio/grouped/${meta.id}", mode: params.publish_dir_mode, pattern: "*.grouped*"
+
     input:
     tuple val(meta), path(mapped_bam)
     val strategy
     val edits
+    val min_mapping_quality
+    val include_non_pf_reads
 
     output:
     tuple val(meta), path("*.grouped.bam"), emit: bam
@@ -38,6 +42,8 @@ process FGBIO_GROUPREADSBYUMI {
         --input ${mapped_bam} \\
         --output ${prefix}.grouped.bam \\
         --family-size-histogram ${prefix}.grouped-family-sizes.txt \\
+        --min-map-q ${min_mapping_quality} \\
+        --include-non-pf-reads ${include_non_pf_reads}
         ${args}
 
     cat <<-END_VERSIONS > versions.yml

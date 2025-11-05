@@ -5,6 +5,8 @@ process ALIGN_BAM {
     //conda "bioconda::fgbio=2.4.0 bioconda::bwa=0.7.18 bioconda::samtools=1.21"
     container 'community.wave.seqera.io/library/fgbio_bwa_samtools:6fad70472c85d4d3'
 
+    publishDir "${params.outdir}/${workflow.runName}/fgbio/align/${meta.id}", mode: params.publish_dir_mode, pattern: ".mapped.bam*"
+
     input:
     tuple val(meta), path(unmapped_bam)
     tuple val(meta2), path(fasta)

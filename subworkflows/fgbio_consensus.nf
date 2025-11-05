@@ -30,7 +30,7 @@ workflow FGBIO_CONSENSUS {
     // align
     ALIGN_RAW_BAM(FGBIO_FASTQTOBAM.out.bam, fasta, fai, dict, bwa, "template-coordinate")
 
-    FGBIO_GROUPREADSBYUMI(ALIGN_RAW_BAM.out.bam, params.groupreadsbyumi_strategy, params.groupreadsbyumi_edits)
+    FGBIO_GROUPREADSBYUMI(ALIGN_RAW_BAM.out.bam, params.groupreadsbyumi_strategy, params.groupreadsbyumi_edits, params.min_mapping_quality, params.include_non_pf_reads)
 
     // Run fgbio CallMolecularConsensusReads and fgbio FilterConsensusReads in the same process
     // for greater efficiency. Uses the same min_reads value for constructing and filtering consensus 

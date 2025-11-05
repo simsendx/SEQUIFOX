@@ -25,7 +25,7 @@ For detailed installation instructions, see below.
 nextflow run simsendx/sequifox -r <VERSION> -profile <PROFILE> --samplesheet ./samplesheet.csv --outdir ./my-results 
 ```
 
-`-r <VERSION>` is optional but strongly recommended for reproducibility and should match the latest version of the pipeline.
+`-r <VERSION>` is optional, but strongly recommended for reproducibility, and should match the latest version of the pipeline.
 
 `-profile <PROFILE>` is mandatory and should reflect any pipeline profile specified in the profile section.
 
@@ -44,7 +44,7 @@ work                # Directory containing the nextflow working files
 
 ### Optional parameters
 
-`--fasta` Reference fasta, otherwise pulls igenomes hg38 (full human genome)
+`--fasta` Reference fasta, otherwise pulls igenomes hg38 (full human genome). Optional but recommended for reproducibility.
 
 `--call_min_reads` Default is 3, minimum number of reads required to form a consensus read
 
@@ -87,14 +87,26 @@ quality control files.
 Formation of consensus reads is currently performed in two separate modes 'default' and 'fgbio'. The default mode is based on
 alignment-free formation based on [UMIec_forensics](https://github.com/sfilges/UMIec_forensics/tree/main) using UMIErrorCorrect.
 The other workflow is based on [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md)
-best practices which uses UMI and mapping location for consensus family generation. The default piepline is run without any 
+best practices which uses UMI and mapping location for consensus family generation. The default pipeline is run without any 
 additional flag. To run the fgbio workflow, run the pipeline with `--mode fgbio`.
 
+```bash
+nextflow run simsendx/sequifox <other parameters> --work-dir <new working directory> --mode fgbio
+```
+
 > [!WARNING]
-> If running fgbio mode, the reference fasta will be indexed unless an existing index is provided. Indexing can take >1 hour for the entire human genome.
-> If you have already generated a bwa index for the same reference, for example after running the pipeline once, you can supply
-> the path to the directory containing index files with `--bwa_index`. Providing a smaller reference genome, focusing only on the targeted STR regions,
-> will also significantly speed up the computation.
+> If running in fgbio mode, the reference fasta will be indexed using BWA unless an existing BWA index is provided. 
+> Indexing can take >1 hour for the entire human genome. If you have already generated a bwa index for the same reference, 
+> for example after running the pipeline once, you can supply the path to the directory containing index files with `--bwa_index`. 
+> Providing a smaller reference genome with `--fasta`, e.g. focusing only on the targeted STR regions, will also significantly 
+> accelerate the index generation.
+
+For maximum reproducibility it is recommended to supply a local copy of the reference genome, and, if running in fgbio mode, also
+to provide the BWA index files, generated from that copy of the genome:
+
+```bash
+nextflow run simsendx/sequifox <other parameters> --work-dir <new working directory> --mode fgbio --fasta <path to reference fasta> --bwa_index <path to folder containing bwa index files>
+```
 
 ### Annotation
 
@@ -218,7 +230,6 @@ TODO: Add examples of custom config files for different cluster environments
 - [FDStools](https://www.fdstools.nl/tools.html)
 - Modified version of [UMIErrorCorrect](https://github.com/stahlberggroup/umierrorcorrect/)
 - [FGBIO](https://github.com/fulcrumgenomics/fgbio/blob/main/docs/best-practice-consensus-pipeline.md); alternative tools for consensus read formation.
-
 - [AdapterRemoval](https://github.com/MikkelSchubert/adapterremoval) *NOTE!* Not used in current iteration of the pipeline.
 - [FLASH](https://github.com/Jerrythafast/FLASH-lowercase-overhang?tab=readme-ov-file); for details, see the [paper](https://academic.oup.com/bioinformatics/article/27/21/2957/217265?login=false). *NOTE!* Not used in current iteration of the pipeline.
 

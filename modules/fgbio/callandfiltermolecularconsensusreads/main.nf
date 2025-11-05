@@ -5,6 +5,8 @@ process FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS {
     //conda "bioconda::fgbio=2.4.0"
     container 'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc'
 
+    publishDir "${params.outdir}/${workflow.runName}/fgbio/consensus/${meta.id}", mode: params.publish_dir_mode, pattern: "*.cons.*"
+
     input:
     tuple val(meta), path(grouped_bam)
     tuple val(meta2), path(fasta)
