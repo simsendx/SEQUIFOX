@@ -1,7 +1,6 @@
 process ADAPTERREMOVAL {
     tag "$meta.id"
 
-    conda "${moduleDir}/environment.yml"
     container 'quay.io/biocontainers/adapterremoval:2.3.4--pl5321haf24da9_1'
 
     input:

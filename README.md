@@ -42,6 +42,21 @@ work                # Directory containing the nextflow working files
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 
+### Samplesheet example
+
+The samplesheet must be comma-separated and contain the column names `sample`, `fastq_1`, and `fastq_2`. Each row is a sample, and
+the full paths should be given for the fastq files.
+
+```
+sample,fastq_1,fastq_2
+17-Simsen28-2800M-5-1-2,/data/17-Simsen28-2800M-5-1-2_S17_L001_R1_001.fastq.gz,/data/17-Simsen28-2800M-5-1-2_S17_L001_R2_001.fastq.gz
+18-Simsen28-CompC-5-1-5,/data/18-Simsen28-CompC-5-1-5_S18_L001_R1_001.fastq.gz,/data/18-Simsen28-CompC-5-1-5_S18_L001_R2_001.fastq.gz
+19-Simsen28-CompC-5-2-8,/data/19-Simsen28-CompC-5-2-8_S19_L001_R1_001.fastq.gz,/data/19-Simsen28-CompC-5-2-8_S19_L001_R2_001.fastq.gz
+20-Simsen28-CompA-5-1-10,/data/20-Simsen28-CompA-5-1-10_S20_L001_R1_001.fastq.gz,/data/20-Simsen28-CompA-5-1-10_S20_L001_R2_001.fastq.gz
+```
+
+This repository contains an example `samplesheet.csv` in the `assets` folder.
+
 ### Optional parameters
 
 `--fasta` Reference fasta, otherwise pulls igenomes hg38 (full human genome). Optional but recommended for reproducibility.
@@ -54,7 +69,7 @@ work                # Directory containing the nextflow working files
 
 `--ini_file` Initialisation file for FDStools pipeline. uses defaults otherwise.
 
-Default files are located in the assets folder and based on SiMSen-Seq assays.
+Default files are located in the `assets` folder and based on SiMSen-Seq assays.
 
 #### Run as a background job
 

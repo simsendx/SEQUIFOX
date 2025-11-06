@@ -69,6 +69,8 @@ process FASTP {
             --thread $task.cpus \\
             --detect_adapter_for_pe \\
             --trim_poly_x \\
+            --qualified_quality_phred 15 \\
+            --unqualified_percent_limit 40 \\
             $args \\
             2> >(tee ${prefix}.fastp.log >&2)
 
