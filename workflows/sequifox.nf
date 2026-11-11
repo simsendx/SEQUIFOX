@@ -35,7 +35,13 @@ workflow SEQUIFOX {
     ch_fasta
 
     main:
-    
+
+    // The UMIErrorCorrect path (preprocess.py -r1, TSSV, convert_fastq2bam.py) takes a single
+    // merged FASTQ per sample; unmerged R1/R2 would fail deep inside preprocess.py.
+    if (params.mode != 'fgbio' && !params.fastp_save_merged) {
+        error "The UMIErrorCorrect workflow needs merged reads: use --fastp_save_merged true, or --mode fgbio"
+    }
+
     // Initilialise versions and reports channels
     ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()

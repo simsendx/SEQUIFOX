@@ -4,7 +4,7 @@ process FDSTOOLS_PIPELINE {
 
     container 'quay.io/sfilges/fdstools:2.1.1'
 
-    publishDir "${params.outdir}/${workflow.runName}/fdstools/post_umi/${meta.id}", mode: params.publish_dir_mode, pattern: "*"
+    publishDir { "${params.outdir}/${workflow.runName}/fdstools/post_umi/${meta.id}" }, mode: params.publish_dir_mode, pattern: "*"
 
     input:
     tuple val(meta), path(reads)

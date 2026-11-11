@@ -4,7 +4,7 @@ process UMIERRORCORRECT_FILTERBAM {
 
     container 'quay.io/sfilges/umierrorcorrect:v0.31'
 
-    publishDir "${params.outdir}/${workflow.runName}/out/${meta.id}", mode: params.publish_dir_mode, pattern: "*_filtered.bam"
+    publishDir { "${params.outdir}/${workflow.runName}/out/${meta.id}" }, mode: params.publish_dir_mode, pattern: "*_filtered.bam"
 
     input:
     tuple val(meta), path(bam)

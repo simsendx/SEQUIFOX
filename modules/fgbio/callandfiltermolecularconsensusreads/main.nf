@@ -5,7 +5,7 @@ process FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS {
     //conda "bioconda::fgbio=2.4.0"
     container 'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc'
 
-    publishDir "${params.outdir}/${workflow.runName}/fgbio/consensus/${meta.id}", mode: params.publish_dir_mode, pattern: "*.cons.*"
+    publishDir { "${params.outdir}/${workflow.runName}/fgbio/consensus/${meta.id}" }, mode: params.publish_dir_mode, pattern: "*.cons.*"
 
     input:
     tuple val(meta), path(grouped_bam)
@@ -30,12 +30,13 @@ process FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS {
         log.info('[fgbio FilterConsensusReads] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.')
     }
     else {
-        mem_gb = task.memory.giga
-        if (mem_gb - filter_mem_gb < 4) {
-            log.info('FGBIO_CALLMOLECULARCONSENSUSREADS may not have enough memory')
-        }
-        else {
-            call_mem_gb = mem_gb - filter_mem_gb
+        // Both JVMs run concurrently in one pipe: split ~80% of the task memory
+        // between them, leaving headroom for JVM overhead to avoid OOM kills
+        def avail_gb = Math.max(2, (task.memory.giga * 0.8) as int)
+        call_mem_gb = Math.max(1, (avail_gb / 2) as int)
+        filter_mem_gb = Math.max(1, avail_gb - call_mem_gb)
+        if (avail_gb < 6) {
+            log.info('FGBIO_CALLANDFILTERMOLECULARCONSENSUSREADS may not have enough memory')
         }
     }
 

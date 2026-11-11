@@ -5,7 +5,7 @@ process FGBIO_GROUPREADSBYUMI {
     //conda "bioconda::fgbio=2.4.0"
     container 'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc'
 
-    publishDir "${params.outdir}/${workflow.runName}/fgbio/grouped/${meta.id}", mode: params.publish_dir_mode, pattern: "*.grouped*"
+    publishDir { "${params.outdir}/${workflow.runName}/fgbio/grouped/${meta.id}" }, mode: params.publish_dir_mode, pattern: "*.grouped*"
 
     input:
     tuple val(meta), path(mapped_bam)
@@ -27,7 +27,8 @@ process FGBIO_GROUPREADSBYUMI {
         log.info('[fgbio GroupReadsByUmi] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.')
     }
     else {
-        mem_gb = task.memory.giga
+        // Leave ~20% of the task memory for JVM overhead to avoid OOM kills
+        mem_gb = Math.max(1, (task.memory.giga * 0.8) as int)
     }
 
     """
@@ -43,7 +44,7 @@ process FGBIO_GROUPREADSBYUMI {
         --output ${prefix}.grouped.bam \\
         --family-size-histogram ${prefix}.grouped-family-sizes.txt \\
         --min-map-q ${min_mapping_quality} \\
-        --include-non-pf-reads ${include_non_pf_reads}
+        --include-non-pf-reads ${include_non_pf_reads} \\
         ${args}
 
     cat <<-END_VERSIONS > versions.yml

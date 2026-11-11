@@ -5,7 +5,7 @@ process ALIGN_BAM {
     //conda "bioconda::fgbio=2.4.0 bioconda::bwa=0.7.18 bioconda::samtools=1.21"
     container 'community.wave.seqera.io/library/fgbio_bwa_samtools:6fad70472c85d4d3'
 
-    publishDir "${params.outdir}/${workflow.runName}/fgbio/align/${meta.id}", mode: params.publish_dir_mode, pattern: ".mapped.bam*"
+    publishDir { "${params.outdir}/${workflow.runName}/fgbio/align/${meta.id}" }, mode: params.publish_dir_mode, pattern: "*.mapped.bam*"
 
     input:
     tuple val(meta), path(unmapped_bam)
@@ -31,6 +31,8 @@ process ALIGN_BAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fgbio_mem_gb = 4
     def extra_command = ""
+    def fgbio_zipper_bams_output
+    def fgbio_zipper_bams_compression
 
     if (!task.memory) {
         log.info('[fgbio ZipperBams] Available memory not known - defaulting to 4GB. Specify process memory requirements to change this.')

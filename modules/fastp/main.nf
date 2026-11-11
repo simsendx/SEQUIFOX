@@ -5,8 +5,8 @@ process FASTP {
     conda "${moduleDir}/environment.yml"
     container 'quay.io/biocontainers/fastp:0.23.4--hadf994f_2'
 
-    publishDir "${params.outdir}/${workflow.runName}/reports/fastp/${meta.id}", mode: params.publish_dir_mode, pattern: "*.{html,json,log}"
-    publishDir "${params.outdir}/${workflow.runName}/preprocessing/fastp/${meta.id}", mode: params.publish_dir_mode, pattern: '*.fastq.gz'
+    publishDir { "${params.outdir}/${workflow.runName}/reports/fastp/${meta.id}" }, mode: params.publish_dir_mode, pattern: "*.{html,json,log}"
+    publishDir { "${params.outdir}/${workflow.runName}/preprocessing/fastp/${meta.id}" }, mode: params.publish_dir_mode, pattern: '*.fastq.gz'
 
     input:
     tuple val(meta), path(reads)
@@ -28,6 +28,7 @@ process FASTP {
     tuple val(meta), path('*_merged.fastq.gz')  , optional:true, emit: reads_merged
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = "${meta.id}"
     def merge_fastq = save_merged ? "-m --merged_out ${prefix}_merged.fastq.gz" : '' 
     def overlap_reads = correction ? "--correction --overlap_len_require $overlap_len_require --overlap_diff_limit $overlap_diff_limit --overlap_diff_percent_limit $overlap_diff_percent_limit" : ''

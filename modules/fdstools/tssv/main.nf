@@ -4,7 +4,7 @@ process FDSTOOLS_TSSV {
 
     container 'quay.io/sfilges/fdstools:2.1.1'
 
-    publishDir "${params.outdir}/${workflow.runName}/fdstools/pre_umi/${meta.id}/", mode: params.publish_dir_mode, pattern: "tssv_out/*"
+    publishDir { "${params.outdir}/${workflow.runName}/fdstools/pre_umi/${meta.id}/" }, mode: params.publish_dir_mode, pattern: "tssv_out/*"
 
     input:
     tuple val(meta), path(reads)

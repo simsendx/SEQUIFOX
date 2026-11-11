@@ -14,14 +14,17 @@ workflow PREPARE_GENOME {
     versions = channel.empty()
 
     // Use user-provided bwa index or generate fresh index
+    // Shape must match BWA_INDEX.out.index: [ meta, directory containing *.amb/.ann/.bwt/.pac/.sa ]
     if(params.bwa_index){
-        println("Using custom index.")
-        ch_index = files( "${params.bwa_index}/*{.amb,.ann,.bwt,.pac,.sa}" )
-        println "BWA index: ${ch_index}"
+        def index_dir = file(params.bwa_index, checkIfExists: true)
+        if (!index_dir.isDirectory() || !index_dir.listFiles().any { f -> f.name.endsWith('.amb') }) {
+            error "--bwa_index must be a directory containing a BWA index (*.amb, *.ann, *.bwt, *.pac, *.sa): ${params.bwa_index}"
+        }
+        log.info "Using custom BWA index: ${index_dir}"
+        ch_index = channel.value([ [id: index_dir.name], index_dir ])
     } else {
         BWA_INDEX(fasta)
-        ch_index = BWA_INDEX.out.index
-        ch_index.view()
+        ch_index = BWA_INDEX.out.index.collect()
         versions = versions.mix(BWA_INDEX.out.versions)
     }
 
@@ -31,10 +34,10 @@ workflow PREPARE_GENOME {
 
     // Gather versions of all tools used
     versions = versions.mix(SAMTOOLS_FAIDX.out.versions)
+    versions = versions.mix(SAMTOOLS_DICT.out.versions)
 
     emit:
-    // bwa = BWA_INDEX.out.index.collect()          // path: bwa/*
-    bwa = ch_index.collect()
+    bwa = ch_index                               // [ meta, path: bwa index dir ]
     dict = SAMTOOLS_DICT.out.dict.collect()      // path: genome.fasta.dict
     fasta_fai = SAMTOOLS_FAIDX.out.fai.collect() // path: genome.fasta.fai
     versions                                     // channel: [ versions.yml ]
