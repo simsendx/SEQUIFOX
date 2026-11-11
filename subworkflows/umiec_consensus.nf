@@ -1,7 +1,6 @@
 //
 // UMIErrorCorrect workflow
 //
-include { SAMTOOLS_FAIDX                                     } from '../modules/samtools/faidx/main'
 include { FDSTOOLS_TSSV                                      } from '../modules/fdstools/tssv/main'
 include { UMIEC_FASTQTOBAM as FASTQTOBAM                     } from '../modules/umiec/fastqtobam/main'
 include { UMIERRORCORRECT_PREPROCESSING as EXTRACTUMIS       } from '../modules/umierrorcorrect/preprocessing/main'
@@ -15,11 +14,10 @@ workflow UMIEC_CONSENSUS {
     bed_file
     library_file
     fasta
+    fai
 
     main:
     ch_versions = channel.empty()
-
-    SAMTOOLS_FAIDX(fasta)
 
     // Preprocessing for UMI error correction
     EXTRACTUMIS(reads, params.umi_length, params.spacer_length)
@@ -36,7 +34,7 @@ workflow UMIEC_CONSENSUS {
         FASTQTOBAM.out.bam,
         FASTQTOBAM.out.bai,
         bed_file, fasta,
-        SAMTOOLS_FAIDX.out.fai,
+        fai,
         params.consensus_method,
         params.groupreadsbyumi_edits
     )
