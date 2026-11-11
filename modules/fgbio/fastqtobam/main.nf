@@ -5,7 +5,7 @@ process FGBIO_FASTQTOBAM {
     //conda "bioconda::fgbio=2.4.0"
     container 'community.wave.seqera.io/library/fgbio:2.4.0--913bad9d47ff8ddc'
 
-    publishDir "${params.outdir}/${workflow.runName}/preprocessing/fgbio/${meta.id}", mode: params.publish_dir_mode, pattern: "*.bam"
+    publishDir { "${params.outdir}/${workflow.runName}/preprocessing/fgbio/${meta.id}" }, mode: params.publish_dir_mode, pattern: "*.bam"
 
     input:
     tuple val(meta), path(reads)

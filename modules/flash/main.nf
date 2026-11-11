@@ -14,6 +14,7 @@ process FLASH {
     script:
     def fq1 = "${reads[0]}"
     def fq2 = "${reads[1]}"
+    def args = task.ext.args ?: ''
     """
     flash \\
         $fq1 \\
