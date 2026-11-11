@@ -127,6 +127,14 @@
         "bwa_index": {
             "type": "string"
         },
+        "fasta_fai": {
+            "type": "string",
+            "description": "Existing FASTA index (.fai). Default: <fasta>.fai if it exists, otherwise it is built."
+        },
+        "fasta_dict": {
+            "type": "string",
+            "description": "Existing sequence dictionary (.dict), fgbio mode. Default: <fasta>.dict or <basename>.dict if it exists, otherwise it is built."
+        },
         "overlap_len_require": {
             "type": "integer",
             "default": 50

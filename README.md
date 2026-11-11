@@ -123,6 +123,14 @@ to provide the BWA index files, generated from that copy of the genome:
 nextflow run simsendx/sequifox <other parameters> --work-dir <new working directory> --mode fgbio --fasta <path to reference fasta> --bwa_index <path to folder containing bwa index files>
 ```
 
+Existing reference index files are reused instead of being rebuilt:
+
+- **FASTA index** (both modes): `<fasta>.fai` next to the FASTA is used automatically; or pass `--fasta_fai <path>`.
+- **Sequence dictionary** (fgbio mode): `<fasta>.dict` or `<basename>.dict` (e.g. `hg38.dict` for `hg38.fa`) next to the FASTA is used automatically; or pass `--fasta_dict <path>`.
+- **BWA index** (fgbio mode): pass the directory with `--bwa_index`.
+
+Make sure these were generated from the same FASTA you pass with `--fasta`.
+
 ### Annotation
 
 STR markers are mapped by FDStools from the UMI corrected files generated in the previous step.

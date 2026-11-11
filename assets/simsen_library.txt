@@ -104,31 +104,33 @@ vWA_v3         = ATAGGACAGATGATAAATACATAGGATGG,GTCACATACTGATTATTCTTATCATCCACT
 ; second value (if given) specifies the maximum allele length expected for that
 ; marker (both inclusive). The TSSV tool will filter sequences that have a
 ; length outside this range.
+; Minimums capped at (reference length between the flanks) - (reported range) + 8 nt:
+; several earlier values removed real alleles (e.g. vWA 96 > 90-nt reference allele).
 CSF1PO_v3      = 63
-D10S1248_v3    = 61
-D12S391_v5     = 89
-D13S317_v3     = 84
+D10S1248_v3    = 59
+D12S391_v5     = 30
+D13S317_v3     = 75
 D16S539_v3     = 52
 D17S1301_v3    = 56
-D18S51_v1      = 94
-D19S433_v3     = 92
-D1S1656_v2     = 87
-D20S482_v3     = 67
-D21S11_v2      = 137
-D22S1045_v5    = 59
-D2S1338_v3     = 100
-D2S441_v1      = 57
-D3S1358_v2     = 75
+D18S51_v1      = 33
+D19S433_v3     = 47
+D1S1656_v2     = 46
+D20S482_v3     = 33
+D21S11_v2      = 50
+D22S1045_v5    = 57
+D2S1338_v3     = 64
+D2S441_v1      = 25
+D3S1358_v2     = 35
 D4S2408_v3     = 45
 D5S818_v2      = 56
-D6S1043_v3     = 59
-D7S820_v1      = 82
-D8S1179_v2     = 64
+D6S1043_v3     = 32
+D7S820_v1      = 59
+D8S1179_v2     = 59
 D9S1122_v6     = 68
-FGA_v2         = 99
-PentaD_v2      = 98
-PentaE_v2      = 37
+FGA_v2         = 56
+PentaD_v2      = 76
+PentaE_v2      = 22
 SE33_v5        = 157
-TH01_v3        = 39
-TPOX_v2        = 46
-vWA_v3         = 96
+TH01_v3        = 34
+TPOX_v2        = 35
+vWA_v3         = 30

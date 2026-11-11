@@ -107,13 +107,16 @@ workflow SEQUIFOX {
     //
     // Run main analysis workflows
     //
+    // Prepare reference files: .fai for both modes; .dict and BWA index for fgbio.
+    // Existing files are reused (--fasta_fai, --fasta_dict, --bwa_index, or found next to --fasta).
+    PREPARE_GENOME(ch_fasta)
+    ch_versions = ch_versions.mix(PREPARE_GENOME.out.versions)
+
     if(params.mode == 'fgbio') {
-        // Prepare genome files (faidx index, samtools dict and bwa index)
-        PREPARE_GENOME(ch_fasta)
         FGBIO_CONSENSUS(ch_reads, ch_fasta, PREPARE_GENOME.out.fasta_fai, PREPARE_GENOME.out.dict, PREPARE_GENOME.out.bwa, ch_library_file)
         ch_consensus_bam = FGBIO_CONSENSUS.out.consensus_bam
     } else {
-        UMIEC_CONSENSUS(ch_reads, ch_bed_file, ch_library_file, ch_fasta)
+        UMIEC_CONSENSUS(ch_reads, ch_bed_file, ch_library_file, ch_fasta, PREPARE_GENOME.out.fasta_fai)
         ch_consensus_bam = UMIEC_CONSENSUS.out.filtered_bam
     }
 
